@@ -1,0 +1,19 @@
+# Compiled pyc #
+################
+*.pyc
+.*
+!/.gitignore
+
+# Static #
+##########
+/images
+/static
+/static/css
+/static/images
+/static/games
+/static/surveys
+/static/js
+/static/favicon.ico
+/static/lib
+/static/fonts
+/static/experiments
