@@ -50,3 +50,10 @@ General Thinking:
 ### Questions
 - Privacy: researchers are always going to be cautious of scooping, etc., and would want to be able to upload images that are private. We might want to allow for this, but add extra features for public workflows, and encourage users to make their images public.
 - Provenance: we might be able to keep track of the number of times a workflow is downloaded, but tracking provenance / results of a workflow is challenging, because the user is pointing at the tool. Eventually we might want some way for users to run a workflow and link to a results object.
+
+
+### Additional Work Needed
+- ability to capture a workflow from a node / local computer --> singularity container
+- easy programmatic access to meta data about an image (eg, I should be able to understand acceptable inputs and outputs from the header)
+- standard "result" templates to put at the end of workflows
+
