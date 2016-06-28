@@ -30,7 +30,7 @@ General Thinking:
 
 - User creates singularity images with or without tools on local machine or cluster
 - Uploads to singularity hub
-- Creates a workflow, and selects images. Workflow has a unique id
+- Creates a workflow [interactively](http://www.jointjs.com/demos/devs), and selects images. Workflow has a unique id
 - Downloads some (SLURM/SGE, etc) tool
 - on his cluster, gives workflow unique id to the tool, and workflow jobs are run
 
