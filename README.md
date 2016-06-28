@@ -56,4 +56,4 @@ General Thinking:
 - ability to capture a workflow from a node / local computer --> singularity container
 - easy programmatic access to meta data about an image (eg, I should be able to understand acceptable inputs and outputs from the header)
 - standard "result" templates to put at the end of workflows
-
+- cluster / environment specific command line tools for working with workflow data structures
