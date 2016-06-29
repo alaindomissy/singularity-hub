@@ -31,9 +31,22 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_user_agents',
     'shub.apps.shub',
-    'shub.apps.main'
+    'shub.apps.main',
+    'shub.apps.users'
 ]
+
+THIRD_PARTY_APPS = [
+    'social.apps.django_app.default',
+    'crispy_forms',
+    'djcelery',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'guardian'
+]
+
+INSTALLED_APPS += THIRD_PARTY_APPS
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
@@ -100,6 +113,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend', # default
+    'guardian.backends.ObjectPermissionBackend',
+)
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/

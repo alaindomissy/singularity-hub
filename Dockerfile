@@ -3,8 +3,10 @@ ENV PYTHONUNBUFFERED 1
 RUN apt-get update && apt-get install -y \
     libopenblas-dev \
     gfortran \
+    libffi-dev \ # for toil encryption, if needed
     libhdf5-dev \
     libgeos-dev \
+    build-essential \
     openssl \
     wget
 
@@ -51,6 +53,7 @@ RUN pip install opbeat
 RUN pip install 'django-hstore==1.3.5'
 RUN pip install django-datatables-view
 RUN pip install 'django-oauth-toolkit==0.9.0'
+RUN pip install wdl
 
 RUN mkdir /code
 WORKDIR /code
