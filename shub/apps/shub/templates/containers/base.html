@@ -1,0 +1,78 @@
+{% extends "main/base.html" %}
+{% load staticfiles %}
+{% block head %}
+{% endblock %}
+{% block content %}
+
+    {% include 'main/sidebar.html' %}
+    <div class="main-panel">
+
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+
+                    <!-- My Containers -->
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card" id="my_containers">
+                            <div class="content">
+                                <div class="row">
+                                    <div class="col-xs-12 text-center">
+                                        <h4><a href=""></i> My Containers</a></h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Container Collections -->
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card" id="collections">
+                            <div class="content">
+                                <div class="row">
+                                    <div class="col-xs-12 text-center">
+                                        <h4><a href=""></i> Collections</a></h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- New Collection -->
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card" id="new_collection">
+                            <div class="content">
+                                <div class="row">
+                                    <div class="col-xs-12 text-center">
+                                        <h4><a href=""></i> New Collection</a></h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- New Container-->
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card" id="new_container">
+                            <div class="content">
+                                <div class="row">
+                                    <div class="col-xs-12 text-center">
+                                        <h4><a href=""></i> New Container</a></h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                {% block image_content %}{% endblock %}
+                </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Select the active button
+$("#{{ card_selection }}").css("background-color","gainsboro")
+</script>
+{% endblock %}
