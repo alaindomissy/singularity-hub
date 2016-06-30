@@ -5018,6 +5018,7 @@ tbody.collapse.in {
 }
 .navbar-default .navbar-brand {
   color: #777;
+  height:100% !important;
 }
 .navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus {
   color: #5e5e5e;
@@ -7376,7 +7377,7 @@ h1, h2, h3, h4, h5, h6 {
   width: 100%;
   position: relative;
   z-index: 99;
-  padding-bottom: .5em;
+  padding-bottom: .1em;
   top: 0;
 }
 #fh5co-header > .navbar {
@@ -7384,7 +7385,7 @@ h1, h2, h3, h4, h5, h6 {
   -moz-border-radius: 0px;
   -ms-border-radius: 0px;
   border-radius: 0px;
-  padding-left: 40px;
+  padding-left: 10px;
   padding-right: 40px;
   margin-bottom: 0;
   background: #fff;
@@ -7419,16 +7420,21 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 20px;
   font-weight: 400;
   margin-left: 0px;
+  margin-right: 40px;
+  margin-top: .35em;
   display: block;
   padding-bottom: 1em;
+  padding-left: 35px;
   font-family: "Roboto Slab", arial, sans-serif;
   background: #e32929;
   color: #fff;
+  min-width: 238px;
 }
 
 #fh5co-main {
   clear: both;
   padding-top: 3em;
+  background-color: #F4F3EF;
 }
 
 #fh5co-content {

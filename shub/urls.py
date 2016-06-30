@@ -5,9 +5,12 @@ The `urlpatterns` list routes URLs to views. For more information please see:
 """
 from django.conf.urls import include, url, patterns
 from shub.apps.main import urls as main_urls
+from shub.apps.shub import urls as shub_urls
 from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^', include(main_urls))
+    url(r'^', include(main_urls)),
+    url(r'^', include(shub_urls))
+
 ]

@@ -2,7 +2,9 @@
 {% load staticfiles %}
 {% block head %}
 {% endblock %}
+
 {% block hero %}
+<div id="fh5co-main">
 <div class="fh5co-intro text-center">
     <div class="container">
         <div class="row">
@@ -14,6 +16,93 @@
     </div>
 </div>
 {% endblock %}
+
+{% block header %}
+            <li class="dropdown mega-dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Start <span class="glyphicon glyphicon-chevron-down pull-right"></span></a>
+                
+                <ul class="dropdown-menu mega-dropdown-menu row">
+                    <li class="col-sm-3">
+                        <ul>
+                            <li class="dropdown-header">Featured Workflows</li>                            
+                            <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                              <div class="carousel-inner">
+
+                                <!-- Workflow 1 -->
+                                <div class="item active">
+                                    <a href="#"><img src="http://placehold.it/254x150/3498db/f5f5f5/&text=Workflow+One" class="img-responsive" alt="workflow 1"></a>
+                                    <h4><small>Workflow One</small></h4>                                        
+                                    <button class="btn btn-primary" type="button">Save</button> <button href="#" class="btn btn-default" type="button"></span> Use this workflow</button>       
+                                </div><!-- End Item -->
+
+                                <!-- Workflow 2 -->
+                                <div class="item">
+                                    <a href="#"><img src="http://placehold.it/254x150/ef5e55/f5f5f5/&text=Workflow+Two" class="img-responsive" alt="workflow 2"></a>
+                                    <h4><small>Make your meatballs with HPC</small></h4>                                        
+                                    <button class="btn btn-primary" type="button">Save</button> <button href="#" class="btn btn-default" type="button"></span> Use this workflow</button>        
+                                </div><!-- End Item -->
+
+                                <!-- Workflow 3 -->
+                                <div class="item">
+                                    <a href="#"><img src="http://placehold.it/254x150/2ecc71/f5f5f5/&text=Workflow+Three" class="img-responsive" alt="workflow 3"></a>
+                                    <h4><small> What would the wookie do?</small></h4>                                        
+                                    <button class="btn btn-primary" type="button">Save</button> <button href="#" class="btn btn-default" type="button"></span> Use this workflow</button>      
+                                </div><!-- End Item -->                                
+                              </div><!-- End Carousel Inner -->
+                            </div><!-- /.carousel -->
+                            <li class="divider"></li>
+
+                            <li><a href="#">View all Workflows <span class="glyphicon glyphicon-chevron-right pull-right"></span></a></li>
+                        </ul>
+                    </li>
+                    <li class="col-sm-3">
+                        <ul>
+                            <li class="dropdown-header">Workflows</li>
+                            <li><a href="#">New Workflow</a></li>
+                            <li><a href="#">My Workflows</a></li>
+                            <li><a href="#">Workflows Collections</a></li>
+                            <li class="divider"></li>
+                            <li class="dropdown-header">Workflows Instructions</li>
+                            <li><a href="#">Workflow getting started</a></li>
+                        </ul>
+                    </li>
+                    <li class="col-sm-3">
+                        <ul>
+                            <li class="dropdown-header">Images</li>
+                            <li><a href="{% url 'containers' %}">All Images</a></li>
+                            <li><a href="#">New Image</a></li>
+                            <li><a href="#">My Images</a></li>
+                            <li class="divider"></li>
+                            <li class="dropdown-header">Images Instructions</li>
+                            <li><a href="#">Images getting started</a></li>
+                            <li><a href="#">About Singularity</a></li>
+                            <li><a href="#">Singularity Tools</a></li>
+                        </ul>
+                    </li>
+                    <li class="col-sm-3">
+                        <ul>
+                            <li class="dropdown-header">Tools</li>
+                            <li><a href="#">Singularity Hub API</a></li>
+                            <li><a href="#">Deployment Tools</a></li>
+                            <li class="divider"></li>
+                            <li class="dropdown-header">About</li>
+                            <li><a href="{% url 'about' %}">Development Team</a></li>
+                            <!--
+                            <li class="dropdown-header">Newsletter</li>
+                            <form class="form" role="form">
+                              <div class="form-group">
+                                <label class="sr-only" for="email">Email address</label>
+                                <input type="email" class="form-control" id="email" placeholder="Enter email">                                                              
+                              </div>
+                              <button type="submit" class="btn btn-primary btn-block">Sign in</button>
+                            </form>-->                                                       
+                        </ul>
+                    </li>
+                </ul>
+                
+            </li>
+{% endblock %}
+
 {% block content %}
 
 <div id="fh5co-portfolio">
@@ -116,5 +205,5 @@
                 </div>
             </div>
         </div>
-
+    </div>
 {% endblock %}
