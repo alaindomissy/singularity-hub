@@ -80,10 +80,11 @@ def all_containers(request):
     context = {"card_selection":"all_containers"}
     return render(request, 'containers/all_containers.html', context)
 
-
 # Personal collections
 def my_container_collections(request):
-    context = {"card_selection":"new_container"}
+    collections = ContainerCollection.objects.filter(owner=request.user)
+    context = {"card_selection":"my_containers",
+               "collections":collections}
     return render(request, 'containers/my_containers.html', context)
 
 # Edit container
