@@ -1,5 +1,24 @@
 {% extends "main/base.html" %}
+{% load crispy_forms_tags %}
 
 {% block content %}
-    {% include 'registration/_signup.html' %}
+<div id="fh5co-portfolio">
+    <form role="form" method="post" action="{% url 'create_user' %}">
+        {% csrf_token %}
+        <h2>Sign Up</h2>
+
+        {{ form | crispy }}
+
+        <div class="extra-errors"></div>
+
+        <button type="submit" class="btn btn-primary" data-disable-with="Signing Up…">
+          Sign Up
+        </button>
+        <span class="pull-right auth-alt-method"><a href="{% url 'my_profile' %}">Log In</a></span>
+        <input type="hidden" name="next" value="{{ request.GET.next }}" />
+    </form>
+</div>
+{% endblock %}
+{% block footer %}
+{% include 'main/footer.html' %}
 {% endblock %}

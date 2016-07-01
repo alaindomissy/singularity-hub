@@ -514,7 +514,6 @@ hr {
 .navbar .navbar-nav > li > a.btn:active,
 .navbar .navbar-nav > li > a.btn.active, .open >
 .navbar .navbar-nav > li > a.btn.dropdown-toggle {
-  background-color: #66615B;
   color: rgba(255, 255, 255, 0.7);
   border-color: #66615B;
 }
@@ -1669,7 +1668,6 @@ textarea.form-control {
 }
 .dropdown-menu > li > a:hover,
 .dropdown-menu > li > a:focus {
-  background-color: #66615B;
   color: rgba(255, 255, 255, 0.7);
   opacity: 1;
   text-decoration: none;
