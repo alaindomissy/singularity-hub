@@ -4,5 +4,6 @@ import shub.apps.shub.views as shub_views
 
 urlpatterns = patterns('',
     url(r'^containers$', shub_views.all_containers, name="containers"),
-    url(r'^containers/new$', shub_views.new_container, name="new_container")
+    url(r'^containers/new$', shub_views.edit_container, name="new_container"),
+    url(r'^containers/(?P<cid>.+?)/edit$',shub_views.edit_container,name='edit_container')
 )

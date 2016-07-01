@@ -132,7 +132,7 @@ SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 
 SENDFILE_BACKEND = 'sendfile.backends.development'
 PRIVATE_MEDIA_REDIRECT_HEADER = 'X-Accel-Redirect'
-#CRISPY_TEMPLATE_PACK = 'bootstrap3'
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 CACHES = {
             'default': {
