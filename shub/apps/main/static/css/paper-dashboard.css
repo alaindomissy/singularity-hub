@@ -1609,7 +1609,7 @@ textarea.form-control {
 }
 .dropdown-menu .divider {
   background-color: #F1EAE0;
-  margin: 0px;
+  margin: 10px;
 }
 .select .dropdown-menu {
   border-radius: 0 0 10px 10px;
@@ -2878,9 +2878,8 @@ textarea.form-control {
   }
   .off-canvas-sidebar .divider {
     height: 1px;
-    margin: 10px 0;
+    margin: 10px;
   }
-
   .nav-open .navbar-collapse {
     -webkit-transform: translate3d(0px, 0, 0);
     -moz-transform: translate3d(0px, 0, 0);

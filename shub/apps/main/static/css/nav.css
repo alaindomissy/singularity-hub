@@ -15,6 +15,8 @@ body {
 .mega-dropdown {
   position: static !important;
   width:100%;
+  background-color: white !important;
+  top: 92px;
 }
 .mega-dropdown-menu {
     padding: 20px 0px;
@@ -68,6 +70,7 @@ body {
   color: #428bca;
   font-size: 18px;
   font-weight:bold;
+  margin-bottom: 5px;
 }
 .mega-dropdown-menu form {
     margin:3px 20px;
