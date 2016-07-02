@@ -2,64 +2,41 @@
 {% load staticfiles %}
 {% block head %}
 {% endblock %}
+{% block header %}
+{% include 'main/mega_dropdown.html' %}
+{% endblock %}
 {% block content %}
 
-    {% include 'main/sidebar.html' %}
-    <div class="main-panel">
+<div id="fh5co-portfolio" style="min-height:600px">
 
-        <div class="content">
             <div class="container-fluid">
                 <div class="row" style="padding-bottom:50px">
 
+                    {% if not containers %}{% if not collection %}
+                    <p class="text-center" style="margin-top:100px; margin-bottom:50px">We couldn't find any containers! Why don't you</p>
+        
                     <!-- My Container Collections -->
-                    <div class="col-lg-4 col-sm-6">
-                        <div class="card" id="my_collections">
+                    <div class="col-lg-12 col-sm-6">
+                        <div class="card" id="new_collection" style="max-width:300px; margin:auto;">
                             <div class="content">
                                 <div class="row">
                                     <div class="col-xs-12 text-center">
-                                        <h4><a href=""></i> My Collections</a></h4>
+                                        <h4><a href="{% url 'new_container_collection' %}"></i> Create a Collection</a></h4>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- All Container Collections -->
-                    <div class="col-lg-4 col-sm-6">
-                        <div class="card" id="collections">
-                            <div class="content">
-                                <div class="row">
-                                    <div class="col-xs-12 text-center">
-                                        <h4><a href=""></i> Collections</a></h4>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- New Collection -->
-                    <div class="col-lg-4 col-sm-6">
-                        <div class="card" id="new_collection">
-                            <div class="content">
-                                <div class="row">
-                                    <div class="col-xs-12 text-center">
-                                        <h4><a href=""></i> New Collection</a></h4>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    {% else %}
+                    {% endif %}{% endif %}
 
                </div>
                 {% block image_content %}{% endblock %}
         </div>
     </div>
-</div>
 {% endblock %}
 
 {% block scripts %}
 <script>
-// Select the active button
-$("#{{ card_selection }}").css("background-color","gainsboro")
 </script>
 {% endblock %}

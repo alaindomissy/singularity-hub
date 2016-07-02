@@ -35,7 +35,6 @@ class Container(models.Model):
     '''A container is a (singularity) container, stored as a file (image) with a unique id and name
     '''
     name = models.CharField(max_length=1000, null=False, blank=False)
-    unique_id = models.CharField(primary_key=True, max_length=200, null=False, blank=False)
     image = models.FileField(upload_to=get_upload_folder,null=False,blank=False)
     # Will need to add version control to Container model here
 
@@ -54,7 +53,7 @@ class Container(models.Model):
 
     # Get the url for a container
     def get_absolute_url(self):
-        return_cid = self.unique_id
+        return_cid = self.id
         return reverse('container_details', args=[str(return_cid)])
 
 
@@ -113,7 +112,6 @@ class Workflow(models.Model):
     '''A workflow is a wdl specification that includes a set of containers
     '''
     name = models.CharField(max_length=1000, null=False, blank=False)
-    unique_id = models.CharField(primary_key=True, max_length=200, null=False, blank=False)
     wdl = models.CharField(max_length=1000, null=False, blank=False)
     
     # Containers - usage is specified in wdl, and list of current containers maintained here

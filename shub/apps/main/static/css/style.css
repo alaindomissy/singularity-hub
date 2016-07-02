@@ -1820,6 +1820,15 @@ abbr[data-original-title] {
   border-bottom: 1px dotted #777777;
 }
 
+.icon-controls {
+  color:#E32929;
+  float:right;
+  padding-right:20px;
+}
+
+.icon-controls a {
+  color:#E32929;
+}
 .initialism {
   font-size: 90%;
 }

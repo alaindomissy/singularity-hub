@@ -32,7 +32,7 @@ media_dir = os.path.join(BASE_DIR,MEDIA_ROOT)
 
 # get container
 def get_container(cid,request):
-    keyargs = {'unique_id':cid}
+    keyargs = {'id':cid}
     try:
         container = Container.objects.get(**keyargs)
     except Container.DoesNotExist:
@@ -42,7 +42,7 @@ def get_container(cid,request):
 
 # get container collection
 def get_container_collection(cid,request):
-    keyargs = {'unique_id':cid}
+    keyargs = {'id':cid}
     try:
         collection = ContainerCollection.objects.get(**keyargs)
     except ContainerCollection.DoesNotExist:
@@ -62,7 +62,7 @@ def get_workflow(wid,request):
 
 # get workflow collection
 def get_workflow_collection(wid,request):
-    keyargs = {'unique_id':wid}
+    keyargs = {'id':wid}
     try:
         collection = WorkflowCollection.objects.get(**keyargs)
     except WorkflowCollection.DoesNotExist:
@@ -81,13 +81,23 @@ def all_containers(request):
     return render(request, 'containers/all_containers.html', context)
 
 # Personal collections
+@login_required
 def my_container_collections(request):
     collections = ContainerCollection.objects.filter(owner=request.user)
     context = {"card_selection":"my_containers",
                "collections":collections}
     return render(request, 'containers/my_containers.html', context)
 
+# View container collection
+@login_required
+def view_container_collection(request,cid):
+    collection = get_container_collection(cid,request)
+    context = {"collection":collection}
+    return render(request, 'containers/container_collection_details.html', context)
+
+
 # Edit container
+@login_required
 def edit_container(request,cid=None):
 
     # Here must determine if user owns container based on collection
@@ -111,6 +121,7 @@ def edit_container(request,cid=None):
 
 
 # Edit container collection
+@login_required
 def edit_container_collection(request, cid=None):
 
     if cid:
@@ -123,7 +134,7 @@ def edit_container_collection(request, cid=None):
             form = ContainerCollectionForm(request.POST,instance=collection)
             if form.is_valid():
                 previous_contribs = set()
-                if form.instance.unique_id is not None:
+                if form.instance.id is not None:
                     previous_contribs = set(form.instance.contributors.all())
                 collection = form.save(commit=False)
                 collection.save()
@@ -138,12 +149,14 @@ def edit_container_collection(request, cid=None):
             form = ContainerCollectionForm(instance=collection)
 
         context = {"form": form,
-                   "is_owner": is_owner}
+                   "is_owner": is_owner,
+                   "containers":"anything"}
 
         return render(request, "containers/edit_container_collection.html", context)
     return redirect("collections")
 
 # Upload container
+@login_required
 def upload_container(request,cid):
     collection = get_collection(collection_cid,request)
     allowed_extensions = ['.img']
