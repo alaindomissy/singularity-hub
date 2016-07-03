@@ -1,13 +1,17 @@
-{% extends "containers/base.html" %}
+{% extends "main/base.html" %}
 {% load crispy_forms_tags %}
 {% load staticfiles %}
 
-{% block image_content %}
+{% block header %}
+{% include 'main/mega_dropdown.html' %}
+{% endblock %}
+
+{% block content %}
 <div class="row">
     <div class="col-md-12">
         <div class="card">
-            <div class="header" style="padding-bottom:50px">
-                <h4 class="title">New Container Collection</h4>
+            <div class="header" style="padding-bottom:50px;padding-top:50px">
+                <h3 class="title">New Container Collection</h3>
             </div>
             <div class="content">
                 <div>

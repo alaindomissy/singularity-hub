@@ -24,8 +24,8 @@
 {% block scripts %}
 <script>
 // Submit for on save button push
+$("form").attr("action","{% url 'upload_container' collection.id %}");
 $("#submid-id-submit").click(function(){
-    $("form").attr("action","{% url 'upload_container' %}");
     $("form").submit();
 });
 </script>

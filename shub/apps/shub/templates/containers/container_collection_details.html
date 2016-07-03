@@ -1,8 +1,12 @@
-{% extends "containers/base.html" %}
+{% extends "main/base.html" %}
 {% load crispy_forms_tags %}
 {% load staticfiles %}
 
-{% block image_content %}
+{% block header %}
+{% include 'main/mega_dropdown.html' %}
+{% endblock %}
+
+{% block content %}
 <div class="row">
     <div class="col-md-12">
         <div class="card" style="padding:20px">
@@ -11,91 +15,99 @@
                 <h3>
                      <span class="icon-controls" style="position:relative;top:-70px">
                          <a href=""><i class="ti-download"></i></a>
-                         <a href=""><i class="ti-eye"></i></a>
                          <a href=""><i class="ti-share"></i></a>
                      </span>
                 </h3>
             </div>
-            <div class="content">
+            <div class="content" style="min-height:200px">
                 <div data-background-color="white" data-active-color="danger">
                      <p style="padding-left:30px">{{ collection.description }}</p>
                 </div>
 
-                        <div class="card">
-                            <div class="header">
-                                <h4 class="title">Statistics</h4>
-                                <p class="category">24 hour usage</p>
-                            </div>
-                            <div class="content">
-                                <div id="chartHours" class="ct-chart"></div>
-                                <div class="footer">
-                                    <div class="chart-legend" style="margin-left:20px">
-                                        <i class="fa fa-circle text-success"></i> Optimal
-                                        <i class="fa fa-circle text-danger"></i> Error
-                                        <i class="fa fa-circle text-warning"></i> Warning
-                                    </div>
-                                    <hr>
-                                    <div class="stats" style="margin-left:20px">
-                                        <i class="ti-reload"></i> Updated 3 minutes ago
-                                    </div>
-                                </div>
+                {% if containers %}
+                <div class="header">
+                    <h4 class="title">Containers</h4>
+                </div>
+                <div class="content">
+                    <p> You have containers!</p>
+                <div class="footer">
+                    <div class="chart-legend" style="margin-left:20px">
+                        <i class="fa fa-circle text-success"></i> Optimal
+                        <i class="fa fa-circle text-danger"></i> Error
+                        <i class="fa fa-circle text-warning"></i> Warning
+                    </div>
+                    <hr>
+                    <div class="stats" style="margin-left:20px">
+                        <i class="ti-reload"></i> Updated 3 minutes ago
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            
+            <!-- No containers! Tell the user to add one -->
+            <div class="col-lg-12 col-sm-6">
+                <div class="card" id="new_container" style="max-width:300px; margin:auto;">
+                    <div class="content">
+                        <div class="row">
+                            <div class="col-xs-12 text-center">
+                                <h4><a href="{% url 'new_container' collection.id %}"></i> Add a container</a></h4>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="header">
-                                <h4 class="title">Workflows</h4>
-                                <p class="category">Lastest running workflows</p>
-                            </div>
-                            <div class="content">
-                                <div id="chartPreferences" class="ct-chart ct-perfect-fourth"></div>
-
-                                <div class="footer">
-                                    <div class="chart-legend"  style="margin-left:20px">
-                                        <i class="fa fa-circle text-success"></i> Finished
-                                        <i class="fa fa-circle text-danger"></i> Error
-                                        <i class="fa fa-circle text-warning"></i> Running
-                                    </div>
-                                    <hr>
-                                    <div class="stats"  style="margin-left:20px">
-                                        <i class="ti-timer"></i> Last run 2 days ago
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card ">
-                            <div class="header">
-                                <h4 class="title">Projects</h4>
-                                <p class="category">Links back to this container</p>
-                            </div>
-                            <div class="content">
-                                <div id="chartActivity" class="ct-chart"></div>
-
-                                <div class="footer">
-                                    <div class="chart-legend"  style="margin-left:20px">
-                                        <i class="fa fa-circle text-info"></i> Public
-                                        <i class="fa fa-circle text-warning"></i> Private
-                                    </div>
-                                    <hr>
-                                    <div class="stats"  style="margin-left:20px">
-                                        <i class="ti-check"></i> Data information certified
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
+            </div>
+            {% endif %}
+        </div>
+    </div>          
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title">Workflows</h4>
+                    <p class="category">Lastest running workflows</p>
+                </div>
+                <div class="content">
+                    <div id="chartPreferences" class="ct-chart ct-perfect-fourth"></div>
                 <div class="footer">
-                <hr>
+                    <div class="chart-legend"  style="margin-left:20px">
+                        <i class="fa fa-circle text-success"></i> Finished
+                        <i class="fa fa-circle text-danger"></i> Error
+                        <i class="fa fa-circle text-warning"></i> Running
+                    </div>
+                    <hr>
+                    <div class="stats"  style="margin-left:20px">
+                        <i class="ti-timer"></i> Last run 2 days ago
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+    <div class="col-md-6">
+        <div class="card ">
+            <div class="header">
+                <h4 class="title">Projects</h4>
+                <p class="category">Links back to this container</p>
+            </div>
+            <div class="content">
+                <div id="chartActivity" class="ct-chart"></div>
+                    <div class="footer">
+                        <div class="chart-legend"  style="margin-left:20px">
+                            <i class="fa fa-circle text-info"></i> Public
+                            <i class="fa fa-circle text-warning"></i> Private
+                        </div>
+                        <hr>
+                        <div class="stats"  style="margin-left:20px">
+                            <i class="ti-check"></i> Data information certified
+                        </div>
+                    </div>
+                 </div>
+             </div>
+         </div>
+         <div class="footer">
+         <hr>
+     </div>
+ </div>
+</div>
 </div>
 {% endblock %}
 
