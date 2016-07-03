@@ -63,10 +63,10 @@
                         <div id="grid" class="uk-grid uk-grid-small uk-grid-width-1-3">
                             {% for collection in collections %}
                             <div data-uk-filter="box,badge,button">
-                                <div class="uk-panel uk-panel-box"><!-- can add classes like uk-panel-box-primary-->                               <p>{{ collection.name }}</p>{{ collection.description }}
+                                <div class="uk-panel uk-panel-box"><!-- can add classes like uk-panel-box-primary-->                               <a><p class="collection" collection="{{ collection.id }}">{{ collection.name }}</p></a>{{ collection.description }}
                                     <!--<button class="uk-button">View</button>--> 
                                     <div class="uk-panel-badge uk-badge">{{ collection.owner }} | {{ collection.containers.count }}</div>
-                                        <a href="{{ collection.get_absolute_url }}"><img src="http://api.adorable.io/avatars/50/{{ collection.id }}" style="float:right" /></a>
+                                        <a><img class="collection" collection="{{ collection.id }}" src="http://api.adorable.io/avatars/50/{{ collection.id }}" style="float:right"/></a>
                                 </div>
                             </div>    
                             {% endfor %}
@@ -113,6 +113,12 @@
        
   });
 }(UIkit.$, UIkit));
+
+// When collection is clicked, navigate to page
+$(".collection").click(function(){
+    var id = $(this).attr("collection")
+    document.location = "/collections/containers/" + id
+});
 </script>
 {% endif %}
 {% endblock %}
