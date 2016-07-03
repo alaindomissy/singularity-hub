@@ -78,10 +78,8 @@ def get_workflow_collection(wid,request):
 # All containers
 def all_containers(request):
     has_collections = False
-    if request.user.is_authenticated:
-        if ContainerCollection.objects.count() > 0:
-            has_collections = True
-    context = {"has_collections":has_collections}
+    collections = ContainerCollection.objects.filter(private=False)
+    context = {"collections":collections}
     return render(request, 'containers/all_containers.html', context)
 
 # Personal collections
