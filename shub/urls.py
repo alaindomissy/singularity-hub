@@ -9,6 +9,11 @@ from shub.apps.shub import urls as shub_urls
 from shub.apps.users import urls as user_urls
 from django.contrib import admin
 
+# Configure custom error pages
+from django.conf.urls import ( handler404, handler500 )
+handler404 = 'shub.apps.main.views.handler404'
+handler500 = 'shub.apps.main.views.handler500'
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^', include(main_urls)),

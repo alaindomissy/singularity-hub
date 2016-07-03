@@ -87,7 +87,7 @@ def view_profile(request, username=None):
         else:
             user = request.user
     else:
-        user = get_object_or_404(User, username=username)
+        user = get_object_or_404(User, user=username)
     return render(request, 'registration/profile.html', {'user': user})
 
 

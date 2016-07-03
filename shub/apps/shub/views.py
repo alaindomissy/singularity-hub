@@ -110,7 +110,7 @@ def view_container(request,cid):
 @login_required
 def edit_container(request,coid,cid=None):
 
-    # Here must determine if user owns container based on collection
+    # TODO: Add collaborators checking
     collection = get_container_collection(coid,request)
     if collection.owner == request.user:
 
