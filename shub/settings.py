@@ -43,7 +43,8 @@ THIRD_PARTY_APPS = [
     'djcelery',
     'rest_framework',
     'rest_framework.authtoken',
-    'guardian'
+    'guardian',
+    'django_gravatar'
 ]
 
 INSTALLED_APPS += THIRD_PARTY_APPS
@@ -140,7 +141,6 @@ CACHES = {
             }
 }
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
@@ -148,6 +148,10 @@ MEDIA_ROOT = '/var/www/images'
 MEDIA_URL = '/images/'
 STATIC_ROOT = '/var/www/static'
 STATIC_URL = '/static/'
+
+# Gravatar
+GRAVATAR_DEFAULT_IMAGE = "retro" 
+# An image url or one of the following: 'mm', 'identicon', 'monsterid', 'wavatar', 'retro'. Defaults to 'mm'
 
 # Bogus secret key.
 try:

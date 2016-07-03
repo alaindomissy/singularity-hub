@@ -54,6 +54,7 @@ RUN pip install 'django-hstore==1.3.5'
 RUN pip install django-datatables-view
 RUN pip install 'django-oauth-toolkit==0.9.0'
 RUN pip install wdl
+RUN pip install django-gravatar2
 
 RUN mkdir /code
 WORKDIR /code
