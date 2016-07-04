@@ -4,12 +4,14 @@ from django.shortcuts import get_object_or_404, render_to_response, render, redi
 from django.http.response import HttpResponseRedirect, HttpResponseForbidden, Http404
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect
 from django.core.exceptions import PermissionDenied, ValidationError
-from shub.apps.shub.utils import save_container_upload
+from shub.apps.shub.utils import save_image_upload
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, JsonResponse
 from shub.settings import BASE_DIR, MEDIA_ROOT
 from django.forms.models import model_to_dict
 from django.utils import timezone
+from django.contrib import messages
+import traceback
 import datetime
 import tarfile
 import tempfile
