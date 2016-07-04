@@ -33,8 +33,10 @@ PRIVACY_CHOICES = ((False, 'Public (The collection will be accessible by anyone 
 
 class Container(models.Model):
     '''A container is a (singularity) container, stored as a file (image) with a unique id and name
+    The user can specify the description, but the name comes from the file
     '''
-    name = models.CharField(max_length=1000, null=False, blank=False)
+    name = models.CharField(max_length=250, null=False, blank=False)
+    description = models.CharField(max_length=1000, null=True, blank=True)
     image = models.FileField(upload_to=get_upload_folder,null=False,blank=False)
     # Will need to add version control to Container model here
 

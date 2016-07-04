@@ -4,18 +4,24 @@ from django.shortcuts import get_object_or_404, render_to_response, render, redi
 from django.http.response import HttpResponseRedirect, HttpResponseForbidden, Http404
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect
 from django.core.exceptions import PermissionDenied, ValidationError
+from shub.apps.shub.utils import save_container_upload
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, JsonResponse
 from shub.settings import BASE_DIR, MEDIA_ROOT
 from django.forms.models import model_to_dict
 from django.utils import timezone
 import datetime
+import tarfile
+import tempfile
+import pickle
+import zipfile
 import hashlib
 import pandas
 import uuid
 import shutil
 import numpy
 import uuid
+import gzip
 import json
 import csv
 import re
@@ -111,24 +117,20 @@ def edit_container(request,coid,cid=None):
     # TODO: Add collaborators checking
     collection = get_container_collection(coid,request)
     if collection.owner == request.user:
-
-        if cid:
-            container = get_container(cid,request)
+        container = Container()
+        if request.method == "POST" and cid != None:
+            container = get_container(request,cid)
+            form = ContainerForm(request.POST,instance=container)
+            if form.is_valid():
+                container = form.save(commit=False)
+                container.save()
+                return HttpResponseRedirect(container.get_absolute_url())
         else:
-            container = Container()
-            if request.method == "POST":
-                form = ContainerForm(request.POST,instance=container)
-                if form.is_valid():
-                    container = form.save(commit=False)
-                    container.save()
-                    return HttpResponseRedirect(container.get_absolute_url())
-            else:
-                form = ContainerForm(instance=container)
-
+            form = ContainerForm(instance=container)
             context = {"form": form,
                        "collection": collection}
             return render(request, "containers/edit_container.html", context)
-    return redirect("containers")
+    return redirect("container_collections")
 
 
 # Edit container collection
@@ -160,8 +162,7 @@ def edit_container_collection(request, cid=None):
             form = ContainerCollectionForm(instance=collection)
 
         context = {"form": form,
-                   "is_owner": is_owner,
-                   "containers":"anything"}
+                   "is_owner": is_owner}
 
         return render(request, "containers/edit_container_collection.html", context)
     return redirect("collections")
@@ -169,73 +170,43 @@ def edit_container_collection(request, cid=None):
 # Upload container
 @login_required
 def upload_container(request,cid):
-    collection = get_container_collection(collection_cid,request)
+    collection = get_container_collection(cid,request)
     is_owner = collection.owner == request.user
     
     if is_owner:
-        allowed_extensions = ['.img']
-        niftiFiles = []
+        allowed_extensions = ['.img','.png'] # just for testing :)
         if request.method == 'POST':
-            form = UploadFileForm(request.POST, request.FILES)
+            form = ContainerForm(request.POST, request.FILES)
             if form.is_valid():
                 tmp_directory = tempfile.mkdtemp()
                 try:
-                    # Save archive (.zip or .tar.gz) to disk
+
+                    # Zipped containers
                     if "file" in request.FILES:
-                        archive_name = request.FILES['file'].name
-                        _, archive_ext = os.path.splitext(archive_name)
-                        if archive_ext == '.zip':
+                        container_name = request.FILES['file'].name
+                        _, container_ext = os.path.splitext(container_name)
+                        if container_ext == '.zip':
                             compressed = zipfile.ZipFile(request.FILES['file'])
                         elif archive_ext == '.gz':
                             django_file = request.FILES['file']
                             django_file.open()
                             compressed = tarfile.TarFile(fileobj=gzip.GzipFile(fileobj=django_file.file, mode='r'), mode='r')
                         else:
-                            raise Exception("Unsupported archive type %s."%archive_name)
-                        compressed.extractall(path=tmp_directory)
+                            raise Exception("Unsupported archive type %s." %(container_name))
+                        compressed.extractall(path=tmp_directory) #TODO: will need to copy to correct place
+
+                    # Containers as images
+                    elif 'image' in request.FILES:
+                        container_name = request.FILES['image'].name
+                        # DO PARSING OF CONTAINER META FROM HEADER HERE
+                        # Save image file to server, and to new container model
+                        container = save_image_upload(collection,request.FILES['image'])
+                        if "description" in request.POST:
+                            container.description = request.POST['description']
+                            container.save()
                     else:
                         raise Exception("Unable to find uploaded files.")
 
-
-                    for label,fpath in niftiFiles:
-                        nii = nib.load(fpath)
-                        if len(nii.get_shape()) > 3 and nii.get_shape()[3] > 1:
-                            messages.warning(request, "Skipping %s - not a 3D file."%label)
-                            continue
-                        hdr = nii.get_header()
-                        raw_hdr = hdr.structarr
-
-                        path, name, ext = split_filename(fpath)
-                        dname = name + ".nii.gz"
-                        spaced_name = name.replace('_',' ').replace('-',' ')
-
-                        if ext.lower() != ".nii.gz":
-                            new_file_tmp_dir = tempfile.mkdtemp()
-                            new_file_tmp = os.path.join(new_file_tmp_dir, name) + '.nii.gz'
-                            nib.save(nii, new_file_tmp)
-                            f = ContentFile(open(new_file_tmp).read(), name=dname)
-                            shutil.rmtree(new_file_tmp_dir)
-                            label += " (old ext: %s)" % ext
-                        else:
-                            f = ContentFile(open(fpath).read(), name=dname)
-
-                        collection = get_collection(collection_cid,request)
-  
-                        if os.path.join(path, name) in atlases:
- 
-                            new_image = Atlas(name=spaced_name,
-                                          description=raw_hdr['descrip'], collection=collection)
-
-                            new_image.label_description_file = ContentFile(
-                                        open(atlases[os.path.join(path,name)]).read(),
-                                                                    name=name + ".xml")
-                        else:
-                            new_image = StatisticMap(name=spaced_name, is_valid=False,
-                                    description=raw_hdr['descrip'] or label, collection=collection)
-                            new_image.map_type = map_type
-
-                        new_image.file = f
-                        new_image.save()
 
                 except:
                     error = traceback.format_exc().splitlines()[-1]
@@ -244,11 +215,9 @@ def upload_container(request,cid):
                     return HttpResponseRedirect(collection.get_absolute_url())
                 finally:
                     shutil.rmtree(tmp_directory)
-                if not niftiFiles:
-                    messages.warning(request, "No NIFTI files (.nii, .nii.gz, .img/.hdr) found in the upload.")
                 return HttpResponseRedirect(collection.get_absolute_url())
         else:
-            form = UploadFileForm()
-        return render_to_response("statmaps/upload_folder.html",
-                                  {'form': form},  RequestContext(request))
-
+            form = ContainerForm()
+            context = {"form": form,
+                       "collection": collection}
+            return render(request, "containers/edit_container.html", context)

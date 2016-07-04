@@ -12,7 +12,7 @@ class ContainerForm(ModelForm):
 
     class Meta:
         model = Container
-        fields = ("name","image")
+        fields = ("description","image")
 
     def clean(self):
         cleaned_data = super(ContainerForm, self).clean()
