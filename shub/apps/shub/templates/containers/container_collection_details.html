@@ -9,16 +9,10 @@
 {% block content %}
 <div id="fh5co-portfolio">
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-8">
         <div class="card" style="padding:20px">
             <div class="header" style="padding-bottom:50px">
                 <h2 class="title">{{ collection.name }}</h2>
-                <h3>
-                     <span class="icon-controls" style="position:relative;top:-70px">
-                         <a href=""><i class="ti-download"></i></a>
-                         <a href=""><i class="ti-share"></i></a>
-                     </span>
-                </h3>
             </div>
             <div class="content" style="min-height:200px">
                 <div data-background-color="white" data-active-color="danger">
@@ -46,8 +40,8 @@
             {% else %}
             
             <!-- No containers! Tell the user to add one -->
-            <div class="col-lg-12 col-sm-6">
-                <div class="card" id="new_container" style="max-width:300px; margin:auto;">
+            <div class="col-lg-8 col-sm-6">
+                <div class="card" id="new_container" style="max-width:300px;">
                     <div class="content">
                         <div class="row">
                             <div class="col-xs-12 text-center">
@@ -58,9 +52,26 @@
                 </div>
             </div>
             {% endif %}
+
         </div>
-    </div>          
-    <div class="row">
+    </div>    
+    </div>
+    <div class="col-md-4">
+            <div class="card" style="padding:20px;">
+            <div class="header">
+                <h3>
+                     <span class="icon-controls" style="position:relative;top:-10px">
+                         <a href=""><i class="ti-download"></i></a><br>
+                         <a href=""><i class="ti-share"></i></a>
+                     </span>
+                </h3>
+                <img src="http://api.adorable.io/avatars/270/{{ collection.id }}" style="position:relative;top:-30px;border-radius:5px"/>
+            </div>
+
+            </div>
+    </div>
+</div>      
+<div class="row">
         <div class="col-md-6">
             <div class="card">
                 <div class="header">
