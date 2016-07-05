@@ -14,7 +14,8 @@ def save_image_upload(collection,image,container=None):
     with open(container_file, 'wb+') as destination:
         for chunk in image.chunks():
             destination.write(chunk)
-    # Turn the container_file into a proper file object
     container.name = image.name
+    container.image = image
+    container.image.name = image.name
     container.save()
     return container

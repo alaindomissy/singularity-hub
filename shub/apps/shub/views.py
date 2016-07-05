@@ -101,9 +101,10 @@ def my_container_collections(request):
 @login_required
 def view_container_collection(request,cid):
     collection = get_container_collection(cid,request)
-    context = {"collection":collection}
+    containers = Container.objects.filter(collection=collection)
+    context = {"collection":collection,
+               "containers":containers}
     return render(request, 'containers/container_collection_details.html', context)
-
 
 # View container
 @login_required
@@ -112,6 +113,23 @@ def view_container(request,cid):
     context = {"container":container}
     return render(request, 'containers/container_details.html', context)
 
+# Delete container
+@login_required
+def delete_container(request,cid):
+    container = get_container(cid,request)
+    collection = container.collection
+    if request.user == collection.owner:
+        if container.image.file != None:
+            file_path = container.image.file.name
+            if os.path.exists(file_path):
+                os.remove(file_path)
+        container.delete()
+    else:
+        # If not authorizer, alert!
+        msg = "You are not authorized to perform this operation."
+        messages.warning(request, msg)
+    return HttpResponseRedirect(collection.get_absolute_url())
+    
 # Edit container
 @login_required
 def edit_container(request,coid,cid=None):
@@ -184,7 +202,6 @@ def upload_container(request,cid):
                     if 'image' in request.FILES:
                         # DO PARSING OF CONTAINER META FROM HEADER HERE
                         # Save image file to server, and to new container model
-                        # Now save image data
                         container = save_image_upload(collection,request.FILES['image'])
                     else:
                         raise Exception("Unable to find uploaded files.")
