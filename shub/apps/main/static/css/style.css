@@ -1833,6 +1833,12 @@ abbr[data-original-title] {
   font-size: 90%;
 }
 
+.topright {
+  position: absolute;
+  top:20px;
+  right:5px;
+}
+
 blockquote {
   padding: 10px 20px;
   margin: 0 0 20px;

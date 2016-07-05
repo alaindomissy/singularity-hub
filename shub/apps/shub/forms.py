@@ -3,10 +3,11 @@ from crispy_forms.bootstrap import AppendedText, PrependedText, FormActions, Tab
 from shub.apps.shub.models import Container, ContainerCollection, Workflow, WorkflowCollection
 from crispy_forms.bootstrap import StrictButton
 from crispy_forms.helper import FormHelper
-from django.forms import ModelForm
+from django.forms import ModelForm, Form
 from django import forms
 from glob import glob
 import os
+
 
 class ContainerForm(ModelForm):
 

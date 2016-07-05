@@ -176,47 +176,23 @@ def upload_container(request,cid):
     is_owner = collection.owner == request.user
     
     if is_owner:
-        allowed_extensions = ['.img','.png'] # just for testing :)
+        allowed_extensions = ['.img']
         if request.method == 'POST':
             form = ContainerForm(request.POST, request.FILES)
             if form.is_valid():
-                tmp_directory = tempfile.mkdtemp()
                 try:
-
-                    # Zipped containers
-                    if "file" in request.FILES:
-                        container_name = request.FILES['file'].name
-                        _, container_ext = os.path.splitext(container_name)
-                        if container_ext == '.zip':
-                            compressed = zipfile.ZipFile(request.FILES['file'])
-                        elif archive_ext == '.gz':
-                            django_file = request.FILES['file']
-                            django_file.open()
-                            compressed = tarfile.TarFile(fileobj=gzip.GzipFile(fileobj=django_file.file, mode='r'), mode='r')
-                        else:
-                            raise Exception("Unsupported archive type %s." %(container_name))
-                        compressed.extractall(path=tmp_directory) #TODO: will need to copy to correct place
-
-                    # Containers as images
-                    elif 'image' in request.FILES:
-                        container_name = request.FILES['image'].name
+                    if 'image' in request.FILES:
                         # DO PARSING OF CONTAINER META FROM HEADER HERE
                         # Save image file to server, and to new container model
+                        # Now save image data
                         container = save_image_upload(collection,request.FILES['image'])
-                        if "description" in request.POST:
-                            container.description = request.POST['description']
-                            container.save()
                     else:
                         raise Exception("Unable to find uploaded files.")
-
-
                 except:
-                    error = traceback.format_exc().splitlines()[-1]
+                    error = traceback.format_exc().splitlines()
                     msg = "An error occurred with this upload: {}".format(error)
                     messages.warning(request, msg)
                     return HttpResponseRedirect(collection.get_absolute_url())
-                finally:
-                    shutil.rmtree(tmp_directory)
                 return HttpResponseRedirect(collection.get_absolute_url())
         else:
             form = ContainerForm()

@@ -84,6 +84,13 @@
         </ul>
             <ul class="nav navbar-nav navbar-right">
 
+                <!-- User Gravatar -->
+                {% if request.user.is_authenticated %}
+                <div class="topright">
+                    {% gravatar user.email 30 %}<span style="margin-left:15px"></span>
+                </div>
+                {% endif %}
+
                 <!-- Search Icon -->
                 <li><a href=""><i class="fa fa-search"></i></a></li>
 
@@ -91,7 +98,6 @@
                 {% if request.user.is_authenticated %}
                     <li class="dropdown">
                         <a href="{% url 'my_profile' %}" class="dropdown-toggle" data-toggle="dropdown">
-                            {% gravatar user.email 30 %}<span style="margin-left:15px"></span>
                             {{ request.user.username }}
                             <b class="caret"></b>
                         </a>

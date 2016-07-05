@@ -6,7 +6,7 @@ import os
 
 def save_image_upload(collection,image,container=None):
     if container==None:
-        container = Container()
+        container = Container(collection=collection)
     collection_dir = "%s/%s" %(MEDIA_ROOT,collection.id)
     if not os.path.exists(collection_dir):
         os.mkdir(collection_dir)
@@ -15,7 +15,6 @@ def save_image_upload(collection,image,container=None):
         for chunk in image.chunks():
             destination.write(chunk)
     # Turn the container_file into a proper file object
-    container.image = File(container_file)
     container.name = image.name
     container.save()
     return container

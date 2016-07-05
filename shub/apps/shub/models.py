@@ -1,5 +1,6 @@
 from guardian.shortcuts import assign_perm, get_users_with_perms, remove_perm
 from django.db.models.signals import m2m_changed
+from shub.apps.shub.storage import ImageStorage
 from polymorphic.models import PolymorphicModel
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
@@ -9,6 +10,7 @@ from jsonfield import JSONField
 from django.db import models
 import collections
 import operator
+import os
 
 #######################################################################################################
 # Supporting Functions and Variables ##################################################################
@@ -19,7 +21,9 @@ def get_upload_folder(instance,filename):
     instance: the Image instance to upload to the ImageCollection
     filename: the filename of the image
     '''
-    return os.path.join('images',str(instance.ContainerCollection.id), filename)
+    collection_id = instance.collection.id
+    # This is relative to MEDIA_ROOT
+    return os.path.join('images',str(collection_id), filename)
 
 
 PRIVACY_CHOICES = ((False, 'Public (The collection will be accessible by anyone and all the data in it will be distributed under CC0 license)'),
@@ -29,35 +33,6 @@ PRIVACY_CHOICES = ((False, 'Public (The collection will be accessible by anyone 
 #######################################################################################################
 # Containers ##########################################################################################
 #######################################################################################################
-
-
-class Container(models.Model):
-    '''A container is a (singularity) container, stored as a file (image) with a unique id and name
-    The user can specify the description, but the name comes from the file
-    '''
-    name = models.CharField(max_length=250, null=False, blank=False)
-    description = models.CharField(max_length=1000, null=True, blank=True)
-    image = models.FileField(upload_to=get_upload_folder,null=False,blank=False)
-    # Will need to add version control to Container model here
-
-    def __str__(self):
-        return self.name
-
-    def __unicode__(self):
-        return self.name
-
-    def get_label(self):
-        return "container"
-
-    class Meta:
-        ordering = ['name']
-        app_label = 'shub'
-
-    # Get the url for a container
-    def get_absolute_url(self):
-        return_cid = self.id
-        return reverse('container_details', args=[str(return_cid)])
-
 
 class ContainerCollection(models.Model):
     '''A container collection is a grouping of containers owned by one or more users
@@ -69,9 +44,6 @@ class ContainerCollection(models.Model):
     add_date = models.DateTimeField('date published', auto_now_add=True)
     modify_date = models.DateTimeField('date modified', auto_now=True)
     # not sure if we will need these with version control
-
-    # Containers
-    containers = models.ManyToManyField(Container,related_name="collection_containers",related_query_name="collection_containers", blank=True,help_text="Containers associated with the collection.",verbose_name="Containers")
 
     # Users
     owner = models.ForeignKey(User)
@@ -104,6 +76,34 @@ class ContainerCollection(models.Model):
             ('del_container_collection', 'Delete container collection'),
             ('edit_container_collection', 'Edit container collection')
         )
+
+class Container(models.Model):
+    '''A container is a (singularity) container, stored as a file (image) with a unique id and name
+    The user can specify the description, but the name comes from the file
+    '''
+    name = models.CharField(max_length=250, null=False, blank=False)
+    description = models.CharField(max_length=1000, null=True, blank=True)
+    image = models.FileField(upload_to=get_upload_folder,null=True,blank=False)
+    collection = models.ForeignKey(ContainerCollection,null=False,blank=False)
+    # Will need to add version control to Container model here
+
+    def __str__(self):
+        return self.name
+
+    def __unicode__(self):
+        return self.name
+
+    def get_label(self):
+        return "container"
+
+    class Meta:
+        ordering = ['name']
+        app_label = 'shub'
+
+    # Get the url for a container
+    def get_absolute_url(self):
+        return_cid = self.id
+        return reverse('container_details', args=[str(return_cid)])
 
 
 #######################################################################################################

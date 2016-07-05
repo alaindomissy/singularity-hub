@@ -8,6 +8,16 @@
 
 {% block content %}
 <div id="fh5co-portfolio">
+    {% if messages %}
+    <!-- Error messages for container uploads will be added here-->
+    <ul class="row">
+        <div class="messages">
+            {% for message in messages %}
+            <p{% if message.tags %} style="border-radius:5px; max-width: 900px;" class="{{ message.tags }} alert alert-warning"{% endif %}>{{ message }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </ul>
 <div class="row">
     <div class="col-md-8">
         <div class="card" style="padding:20px">
