@@ -4,12 +4,11 @@
 {% include 'main/mega_dropdown.html' %}
 {% endblock %}
 {% block css %}
-<link rel='stylesheet prefetch' href="{% static "css/uikit.almost-flat.min.css"%}">
+<link rel="stylesheet" href="{% static "css/collection-grid.css"%}">     
 {% endblock %}
 
 {% block content %}
 <div class="row">
-    <div class="col-md-12">
         <div id="fh5co-portfolio" style="min-height:600px">
             <div class="container-fluid">
                 <div class="row" style="padding-bottom:50px;">
@@ -34,92 +33,82 @@
                     <div class="col-lg-4 col-sm-6"></div>
 
                     {% else %}
-      
-                    <div class="uk-container uk-container-center">
-                        <h2 class="uk-margin-top">Container Collections</h2>
-
-                        <!-- Filter Controls -->
-                        <ul class="grid-filter uk-subnav uk-subnav-pill">
-                            <li data-uk-filter="" class="uk-active"><a href="">All</a></li>
-                            <!--<li data-uk-filter="box"><a href="">Tag</a></li>
-                            <li data-uk-filter="box-primary"><a href="">Tag1</a></li>
-                            <li data-uk-filter="box-secondary"><a href="">Tag2</a></li>-->
-                        </ul>
-                        <!--<ul class="grid-filter uk-subnav uk-subnav-pill">
-                            <li data-uk-filter="" class="uk-active"><a href="">All</a></li>
-                            <li data-uk-filter="badge"><a href="">Badge</a></li>
-                            <li data-uk-filter="badge-warning"><a href="">Badge warning</a></li>
-                            <li data-uk-filter="badge-danger"><a href="">Badge danger</a></li>
-                        </ul>
-                        <ul class="grid-filter uk-subnav uk-subnav-pill">
-                            <li data-uk-filter="" class="uk-active"><a href="">All</a></li>
-                            <li data-uk-filter="button"><a href="">Button</a></li>
-                            <li data-uk-filter="button-primary"><a href="">Button primary</a></li>
-                            <li data-uk-filter="button-success"><a href="">Button success</a></li>
-                        </ul>-->
-
-                        <!-- Dynamic Grid -->
-                        <!--http://getuikit.com/docs/button.html-->
-                        <div id="grid" class="uk-grid uk-grid-small uk-grid-width-1-3">
-                            {% for collection in collections %}
-                            <div data-uk-filter="box,badge,button">
-                                <div class="uk-panel uk-panel-box"><!-- can add classes like uk-panel-box-primary-->                               <a><p class="collection" collection="{{ collection.id }}">{{ collection.name }}</p></a>{{ collection.description }}
-                                    <!--<button class="uk-button">View</button>--> 
-                                    <div class="uk-panel-badge uk-badge" style="min-width:72px">
-                                        {{ collection.owner }} | {{ collection.container_set.count }}
+                        <h3 class="title">Container Collections</h3>
+                        <div class=grid style=width:1230px>
+                        {% for collection in collections %}
+                            <div class=grid-item>
+                                <div class="card app-icon-card">
+                                    <div class="app-icon-image container-collection" id="{{ collection.id }}" style="background: url(http://api.adorable.io/avatars/270/{{ collection.id }}) center">
+                                        <a class="hidden" href="{% url 'container_collection_details' collection.id %}"></a>
                                     </div>
-                                    <a><img class="collection" collection="{{ collection.id }}" src="http://api.adorable.io/avatars/68/{{ collection.id }}" style="float:right; border-radius:5px;"/></a>
+                                    <div class=app-icon-details>
+                                        <div class=app-icon-title>{{ collection.name }}</div>
+                                            <a href="{% url 'container_collection_details' collection.id %}"><i style="color:#666; margin-right:20px" class="ti-package"></i></a>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>    
-                            {% endfor %}
-                         </div>
-                     </div>
+                        {% endfor %}
+                        </div>
+
                     {% endif %}
                </div>
             </div>
         </div>
     </div>
-</div>
 {% endblock %}
 
 {% block scripts %}
 
 {% if collections %}
-<script src="{% static "js/uikit.js"%}"></script>
-<script src="{% static "js/grid.js"%}"></script>
-
 <script>
+! function(t) {
+        "use strict";
 
-(function($, UI) {
-  var controls, grid, filters;
+        function e(t, e, i, n, r) {
+                var o = Array.prototype.forEach,
+                        f = t instanceof Node ? t : document.querySelector(t);
+                if (!f) return !1;
+                var s = f.querySelectorAll(e);
+                if (0 === s.length) return !1;
+                i = "number" == typeof i && isFinite(i) && Math.floor(i) === i ? i : 6, f.style.width = "";
+                var u = f.getBoundingClientRect().width,
+                        d = s[0].getBoundingClientRect().width + i,
+                        l = Math.max(Math.floor((u - i) / d), 1),
+                        a = 0;
+                u = d * l + i + "px", f.style.width = u, f.style.position = "relative";
+                for (var c = [], m = [], p = 0; l > p; p++) m.push(p * d + i), c.push(i);
+                o.call(s, function(t) {
+                        var e = c.slice(0).sort(function(t, e) {
+                                return t - e
+                        }).shift();
+                        e = c.indexOf(e);
+                        var r = m[e],
+                                f = c[e],
+                                s = ["webkitTransform", "MozTransform", "msTransform", "OTransform", "transform"];
+                        return t.style.position = "absolute", n || o.call(s, function(e) {
+                                t.style[e] = "translate3D(" + r + "px," + f + "px,0)"
+                        }), c[e] += t.getBoundingClientRect().height + i, a += 1, n ? n(t, r, f, a) : void 0
+                });
+                var h = c.slice(0).sort(function(t, e) {
+                        return t - e
+                }).pop();
+                f.style.height = h + "px", "function" == typeof r && r(s)
+        }
+        "function" == typeof define && define.amd ? define(function() {
+                return e
+        }) : "undefined" != typeof module && module.exports ? module.exports = e : t.minigrid = e
+}(this),
+function() {
+        minigrid(".grid", ".grid-item"), window.addEventListener("resize", function() {
+                minigrid(".grid", ".grid-item")
+        })
+}();
 
-  function filterGrid() {
-    filters = [];
-    controls.filter('.uk-active').each(function() {
-      var filter = $(this).data('ukFilter');
-      if (filter !== '') filters.push(filter)
+$(document).ready(function() {
+    $(".container-collection").click(function() {
+        window.location = $(this).find("a").attr("href"); 
+        return false
     });
-    grid.filter(filters.join(','));
-  }
-
-  UI.ready(function() {
-    controls = $('[data-uk-filter]');
-    grid = UI.grid('#grid', {gutter: 20});
-
-    controls.on('click', function(e) {
-      e.preventDefault();
-      $(this).addClass('uk-active').siblings().removeClass('uk-active')
-      filterGrid();
-    });
-    filterGrid();
-       
-  });
-}(UIkit.$, UIkit));
-
-// When collection is clicked, navigate to page
-$(".collection").click(function(){
-    var id = $(this).attr("collection")
-    document.location = "/collections/containers/" + id
 });
 </script>
 {% endif %}
