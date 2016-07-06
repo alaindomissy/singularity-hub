@@ -1823,6 +1823,7 @@ abbr[data-original-title] {
 .icon-controls {
   color:#E32929;
   float:right;
+  font-size:28px;
   padding-right:20px;
 }
 

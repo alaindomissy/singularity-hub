@@ -23,10 +23,12 @@
         {% endif %}
     </ul>
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-11">
         <div class="card" style="padding:20px">
             <div class="header" style="padding-bottom:50px">
-                <h3 class="title">{{ collection.name }}</h3>
+                   <h3 class="title">
+                   <img src="http://api.adorable.io/avatars/70/{{ collection.id }}" style="position:relative;top:-5px;border-radius:35px; padding-right:20px;margin-right:15px"/>
+                   {{ collection.name }}</h3>
             </div>
             <div class="content" style="min-height:200px">
                 <div data-background-color="white" data-active-color="danger">
@@ -67,7 +69,6 @@
                     </div>
                     <hr>
                     <div class="stats" style="margin-left:20px">
-                        <i class="ti-reload"></i> Updated 3 minutes ago
                     </div>
                 </div>
             {% else %}
@@ -89,18 +90,14 @@
         </div>
     </div>    
     </div>
-    <div class="col-md-4">
-            <div class="card" style="padding:20px;">
-            <div class="header">
+    <div class="col-md-1">
+            <div class="card">
                 <h3>
                      <span class="icon-controls" style="position:relative;top:-10px">
                          <a href=""><i class="ti-download"></i></a><br>
                          <a href=""><i class="ti-share"></i></a>
                      </span>
                 </h3>
-                <img src="http://api.adorable.io/avatars/270/{{ collection.id }}" style="position:relative;top:-30px;border-radius:5px"/>
-            </div>
-
             </div>
     </div>
 </div>      
@@ -120,7 +117,7 @@
                         <i class="fa fa-circle text-warning"></i> Running
                     </div>
                     <hr>
-                    <div class="stats"  style="margin-left:20px">
+                    <div class="stats" style="margin-left:20px">
                         <i class="ti-timer"></i> Last run 2 days ago
                     </div>
                 </div>
