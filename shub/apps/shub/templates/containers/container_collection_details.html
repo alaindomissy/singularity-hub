@@ -6,6 +6,10 @@
 {% include 'main/mega_dropdown.html' %}
 {% endblock %}
 
+{% block css %}
+<link rel="stylesheet" href="{% static "css/material-table.css"%}">
+{% endblock%}
+
 {% block content %}
 <div id="fh5co-portfolio">
     {% if messages %}
@@ -22,7 +26,7 @@
     <div class="col-md-8">
         <div class="card" style="padding:20px">
             <div class="header" style="padding-bottom:50px">
-                <h2 class="title">{{ collection.name }}</h2>
+                <h3 class="title">{{ collection.name }}</h3>
             </div>
             <div class="content" style="min-height:200px">
                 <div data-background-color="white" data-active-color="danger">
@@ -30,11 +34,31 @@
                 </div>
 
                 {% if containers %}
-                <div class="header">
-                    <h4 class="title">Containers</h4>
+                <div class="card material-table">
+                   <div class="table-header">
+                       <span class="table-title">Containers</span>
+                           <div class="actions">
+                               <a href="#add_users" class="modal-trigger waves-effect btn-flat nopadding"><i class="material-icons">person_add</i></a>
+                               <a href="#" class="search-toggle waves-effect btn-flat nopadding"><i class="material-icons">search</i></a>
+                           </div>
+                   </div>
+                   <table id="datatable">
+                       <thead>
+                           <tr>
+                               <th>Name</th>
+                               <th>Description</th>
+                           </tr>
+                       </thead>
+                       <tbody>
+                           {% for container in containers %}
+                           <tr>
+                               <td>{{ container.name }}</td>
+                               <td>{{ container.description }}</td>
+                           </tr>
+                           {% endfor %}
+                       </tbody>
+                    </table>
                 </div>
-                <div class="content">
-                    <p> You have containers!</p>
                 <div class="footer">
                     <div class="chart-legend" style="margin-left:20px">
                         <i class="fa fa-circle text-success"></i> Optimal
@@ -46,7 +70,6 @@
                         <i class="ti-reload"></i> Updated 3 minutes ago
                     </div>
                 </div>
-            </div>
             {% else %}
             
             <!-- No containers! Tell the user to add one -->
@@ -135,7 +158,7 @@
 {% endblock %}
 
 {% block scripts %}
-<script>
-
-</script>
+<script src="{% static "js/jquery.dataTables.min.js"%}"></script>
+<script src="{% static "js/materialize.min.js"%}"></script>
+<script src="{% static "js/material.datatables.js"%}"></script>
 {% endblock %}
