@@ -11,21 +11,21 @@
                                 <!-- Workflow 1 -->
                                 <div class="item active">
                                     <a href="#"><img src="http://placehold.it/254x150/3498db/f5f5f5/&text=Workflow+One" class="img-responsive" alt="workflow 1"></a>
-                                    <h4><small>Workflow One</small></h4>                                        
+                                    <h6><small>Workflow One</small></h6>                                        
                                     <button class="btn btn-primary" type="button">Save</button> <button href="#" class="btn btn-default" type="button"></span> Use this workflow</button>       
                                 </div><!-- End Item -->
 
                                 <!-- Workflow 2 -->
                                 <div class="item">
                                     <a href="#"><img src="http://placehold.it/254x150/ef5e55/f5f5f5/&text=Workflow+Two" class="img-responsive" alt="workflow 2"></a>
-                                    <h4><small>Make your meatballs with HPC</small></h4>                                        
+                                    <h6><small>Make your meatballs with HPC</small></h6>                                        
                                     <button class="btn btn-primary" type="button">Save</button> <button href="#" class="btn btn-default" type="button"></span> Use this workflow</button>        
                                 </div><!-- End Item -->
 
                                 <!-- Workflow 3 -->
                                 <div class="item">
                                     <a href="#"><img src="http://placehold.it/254x150/2ecc71/f5f5f5/&text=Workflow+Three" class="img-responsive" alt="workflow 3"></a>
-                                    <h4><small> What would the wookie do?</small></h4>                                        
+                                    <h6><small> What would the wookie do?</small></h6>                                        
                                     <button class="btn btn-primary" type="button">Save</button> <button href="#" class="btn btn-default" type="button"></span> Use this workflow</button>      
                                 </div><!-- End Item -->                                
                               </div><!-- End Carousel Inner -->
@@ -37,21 +37,19 @@
                     </li>
                     <li class="col-sm-3">
                         <ul>
-                            <li class="dropdown-header">Workflows</li>
-                            <li><a href="#">New Workflow</a></li>
+                            <li class="dropdown-header">Workflows</li><br>
+                            <li><a href="#">Create a New Workflow</a></li>
                             <li><a href="#">My Workflows</a></li>
-                            <li><a href="#">Workflows Collections</a></li>
-                            <li class="divider"></li>
+                            <li style="margin-bottom:30px"><a href="#">Workflows Collections</a></li>
                             <li class="dropdown-header">Workflows Instructions</li>
                             <li><a href="#">Workflow getting started</a></li>
                         </ul>
                     </li>
                     <li class="col-sm-3">
                         <ul>
-                            <li class="dropdown-header">Containers</li>
+                            <li class="dropdown-header">Containers</li><br>
                             <li><a href="{% url 'my_container_collections' %}">My Collections</a></li>
-                            <li><a href="{% url 'container_collections' %}">All Collections</a></li>
-                            <li class="divider"></li>
+                            <li style="margin-bottom:30px"><a href="{% url 'container_collections' %}">All Collections</a></li>
                             <li class="dropdown-header">Containers Instructions</li>
                             <li><a href="#">Containers getting started</a></li>
                             <li><a href="singularity.lbl.gov" target="_blank">About Singularity</a></li>

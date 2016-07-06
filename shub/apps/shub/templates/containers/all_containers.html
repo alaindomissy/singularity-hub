@@ -66,7 +66,7 @@
                                 <div class="uk-panel uk-panel-box"><!-- can add classes like uk-panel-box-primary-->                               <a><p class="collection" collection="{{ collection.id }}">{{ collection.name }}</p></a>{{ collection.description }}
                                     <!--<button class="uk-button">View</button>--> 
                                     <div class="uk-panel-badge uk-badge" style="min-width:72px">
-                                        {{ collection.owner }} | {{ collection.containers.count }}
+                                        {{ collection.owner }} | {{ collection.container_set.count }}
                                     </div>
                                     <a><img class="collection" collection="{{ collection.id }}" src="http://api.adorable.io/avatars/68/{{ collection.id }}" style="float:right; border-radius:5px;"/></a>
                                 </div>
