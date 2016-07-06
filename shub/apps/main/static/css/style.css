@@ -1838,6 +1838,10 @@ abbr[data-original-title] {
   right:5px;
 }
 
+.collection {
+  border: none !important;
+}
+
 blockquote {
   padding: 10px 20px;
   margin: 0 0 20px;

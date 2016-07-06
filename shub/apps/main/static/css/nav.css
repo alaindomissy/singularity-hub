@@ -12,6 +12,11 @@ body {
     width:200px;
     font-weight:bold;
 }
+
+nav ul li:hover, nav ul li.active {
+   background-color: white !important;
+}
+
 .mega-dropdown {
   position: static !important;
   width:100%;
