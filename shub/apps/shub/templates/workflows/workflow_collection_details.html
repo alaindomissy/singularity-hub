@@ -36,10 +36,10 @@
                      <p style="padding-left:30px">{{ collection.description }}</p>
                 </div>
 
-                {% if containers %}
+                {% if workflows %}
                 <div class="card material-table mdl-data-table--selectable">
                    <div class="table-header">
-                       <span class="table-title">Containers</span>
+                       <span class="table-title">Workflows</span>
                            <div class="actions">
                                <a href="#add_users" class="modal-trigger waves-effect btn-flat nopadding"><i class="material-icons">person_add</i></a>
                                <a href="#" class="search-toggle waves-effect btn-flat nopadding"><i class="material-icons">search</i></a>
@@ -56,26 +56,24 @@
                                 </span>
                                </td>-->
                                <th>Name</th>
-                               <th>Description</th>
+                               <th>#Containers</th>
                            </tr>
                        </thead>
 
-                       <form method="POST" action="{% url 'new_workflow' collection.id %}">
                            <tbody>
-                           {% for container in containers %}
+                           {% for workflow in workflows %}
                            <tr>
                                <td style="width:80px"><span class="mdl-list__item-secondary-action">
                                    <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="list-checkbox-{{ container.id }}">
                                    <input type="checkbox" name="{{ container.id }}" id="list-checkbox-{{ container.id }}" class="mdl-checkbox__input"/>
                                    </label>
                                 </span></td>
-                               <td>{{ container.name }}</td>
-                               <td>{{ container.description }}</td>
+                               <td>{{ workflow.name }}</td>
+                               <td>{{ workflow.containers.count }}</td>
                            </tr>
                            {% endfor %}
                        </tbody>
-                       <button type="submit" name="submit" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">New Workflow</button>
-                       </form>    
+                       
                     </table>
                 </div>
                 <div class="footer">
