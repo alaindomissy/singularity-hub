@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block css %}
-<link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.indigo-pink.min.css">
+<link rel="stylesheet" href="{% static "css/material.indigo-pink.min.css"%}">
 <link rel="stylesheet" href="{% static "css/material-table.css"%}">
 {% endblock%}
 
@@ -28,7 +28,7 @@
         <div class="card" style="padding:20px">
             <div class="header" style="padding-bottom:50px">
                    <h3 class="title">
-                   <img src="http://api.adorable.io/avatars/70/con-{{ collection.id }}" style="position:relative;top:-5px;border-radius:35px; padding-right:20px;margin-right:15px"/>
+                   <img src="http://api.adorable.io/avatars/70/wf-{{ collection.id }}" style="position:relative;top:-5px;border-radius:35px; padding-right:20px;margin-right:15px"/>
                    {{ collection.name }}</h3>
             </div>
             <div class="content" style="min-height:200px">
@@ -60,8 +60,7 @@
                            </tr>
                        </thead>
 
-                       <form method="POST" action="{% url 'new_workflow' %}" id="container-table">
-                           {% csrf_token %}
+                       <form method="POST" action="{% url 'new_workflow' collection.id %}">
                            <tbody>
                            {% for container in containers %}
                            <tr>
@@ -75,23 +74,11 @@
                            </tr>
                            {% endfor %}
                        </tbody>
+                       <button type="submit" name="submit" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">New Workflow</button>
                        </form>    
-
                     </table>
                 </div>
                 <div class="footer">
-                       {% if workflows %}
-                       <div id="submit" type="submit" name="submit" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">New Workflow</div>
-                       {% else %}
-                       <div id="submit" type="submit" name="submit" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" disabled>New Workflow</div>
-                       <div class="mdl-tooltip" for="submit">
-                          Create a workflow collection first.
-                       </div>
-                       {% endif %}
-                       <a id="new-workflow-collection" href="{% url 'new_workflow_collection' %}"><button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">New Workflow Collection</button></a>
-                       <div class="mdl-tooltip" for="new-workflow-collection">
-                          A group of workflows with custom users and permissions.
-                       </div>
                     <!--<div class="chart-legend" style="margin-left:20px">
                         <i class="fa fa-circle text-success"></i> Optimal
                         <i class="fa fa-circle text-danger"></i> Error
@@ -109,7 +96,7 @@
                     <div class="content">
                         <div class="row">
                             <div class="col-xs-12 text-center">
-                                <h4><a href="{% url 'new_container' collection.id %}"></i> Add a container</a></h4>
+                                <h4><a href="{% url 'new_workflow' collection.id %}"></i> Add a workflow</a></h4>
                             </div>
                         </div>
                     </div>
@@ -131,72 +118,21 @@
             </div>
     </div>
 </div>      
-<div class="row">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="header">
-                    <h4 class="title">Workflows</h4>
-                    <p class="category">Lastest running workflows</p>
-                </div>
-                <div class="content">
-                    <div id="chartPreferences" class="ct-chart ct-perfect-fourth"></div>
-                <div class="footer">
-                    <div class="chart-legend"  style="margin-left:20px">
-                        <i class="fa fa-circle text-success"></i> Finished
-                        <i class="fa fa-circle text-danger"></i> Error
-                        <i class="fa fa-circle text-warning"></i> Running
-                    </div>
-                    <hr>
-                    <div class="stats" style="margin-left:20px">
-                        <i class="ti-timer"></i> Last run 2 days ago
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="card ">
-            <div class="header">
-                <h4 class="title">Projects</h4>
-                <p class="category">Links back to this container</p>
-            </div>
-            <div class="content">
-                <div id="chartActivity" class="ct-chart"></div>
-                    <div class="footer">
-                        <div class="chart-legend"  style="margin-left:20px">
-                            <i class="fa fa-circle text-info"></i> Public
-                            <i class="fa fa-circle text-warning"></i> Private
-                        </div>
-                        <hr>
-                        <div class="stats"  style="margin-left:20px">
-                            <i class="ti-check"></i> Data information certified
-                        </div>
-                    </div>
-                 </div>
-             </div>
-         </div>
-         <div class="footer">
-             <hr>
-         </div>
-     </div>
-</div>
+
 </div>
 </div>
 {% endblock %}
 
 {% block scripts %}
 <script src="{% static "js/jquery.dataTables.min.js"%}"></script>
-<script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
+<script defer src="{% static "js/material.min.js"%}"></script>
 <script src="{% static "js/materialize.min.js"%}"></script>
 <script src="{% static "js/material.datatables.js"%}"></script>
 <script>
 $(document).ready(function(){
+    // Resolving bug with custom checkbox implementation
     $(".icons").remove();
 
-    // Submit the form when the user clicks "new workflow"
-    $("#submit").click(function(){
-        $("#container-table").submit();
-    });
     // Select all functionality for table checkbox
     /*
     $("#checkbox-selectall").click(function(){

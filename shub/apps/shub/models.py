@@ -110,34 +110,6 @@ class Container(models.Model):
 # Workflows ###########################################################################################
 #######################################################################################################
 
-class Workflow(models.Model):
-    '''A workflow is a wdl specification that includes a set of containers
-    '''
-    name = models.CharField(max_length=1000, null=False, blank=False)
-    wdl = models.CharField(max_length=1000, null=False, blank=False)
-    
-    # Containers - usage is specified in wdl, and list of current containers maintained here
-    containers = models.ManyToManyField(Container,related_name="collection_workflows",related_query_name="collection_workflows", blank=True,help_text="Workflows associated with the collection.",verbose_name="Containers in a workflow")
-
-    def __str__(self):
-        return self.name
-
-    def __unicode__(self):
-        return self.name
-
-    def get_label(self):
-        return "workflow"
-
-    class Meta:
-        ordering = ['name']
-        app_label = 'shub'
-
-    # Get the url for a container
-    def get_absolute_url(self):
-        return_cid = self.unique_id
-        return reverse('workflow_details', args=[str(return_cid)])
-
-
 class WorkflowCollection(models.Model):
     '''A workflow collection is a grouping of workflows owned by one or more users
     '''
@@ -147,9 +119,6 @@ class WorkflowCollection(models.Model):
     description = models.TextField(blank=True, null=True)
     add_date = models.DateTimeField('date published', auto_now_add=True)
     modify_date = models.DateTimeField('date modified', auto_now=True)
-
-    # Workflows
-    workflows = models.ManyToManyField(Workflow,related_name="Workflows",related_query_name="collection_workflows", blank=True,help_text="Workflows associated with the collection.",verbose_name="Workflows")
 
     # Users
     owner = models.ForeignKey(User)
@@ -182,6 +151,35 @@ class WorkflowCollection(models.Model):
             ('del_workflow_collection', 'Delete workflow collection'),
             ('edit_workflow_collection', 'Edit workflow collection')
         )
+
+
+class Workflow(models.Model):
+    '''A workflow is a wdl specification that includes a set of containers
+    '''
+    name = models.CharField(max_length=1000, null=False, blank=False)
+    collection = models.ForeignKey(WorkflowCollection,null=False,blank=False)
+    wdl = models.CharField(max_length=1000, null=False, blank=False)
+    
+    # Containers - usage is specified in wdl, and list of current containers maintained here
+    containers = models.ManyToManyField(Container,related_name="collection_workflows",related_query_name="collection_workflows", blank=True,help_text="Containers associated with the workflow.",verbose_name="Containers in a workflow")
+
+    def __str__(self):
+        return self.name
+
+    def __unicode__(self):
+        return self.name
+
+    def get_label(self):
+        return "workflow"
+
+    class Meta:
+        ordering = ['name']
+        app_label = 'shub'
+
+    # Get the url for a container
+    def get_absolute_url(self):
+        return_cid = self.id
+        return reverse('workflow_details', args=[str(return_cid)])
 
 
 def contributors_changed(sender, instance, action, **kwargs):

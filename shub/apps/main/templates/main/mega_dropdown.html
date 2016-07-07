@@ -38,9 +38,8 @@
                     <li class="col-sm-3">
                         <ul>
                             <li class="dropdown-header">Workflows</li><br>
-                            <li><a href="#">Create a New Workflow</a></li>
-                            <li><a href="#">My Workflows</a></li>
-                            <li style="margin-bottom:30px"><a href="#">Workflows Collections</a></li>
+                            <li><a href="{% url 'my_workflow_collections' %}">My Workflow Collections</a></li>
+                            <li style="margin-bottom:30px"><a href="{% url 'workflow_collections' %}">Workflows Collections</a></li>
                             <li class="dropdown-header">Workflows Instructions</li>
                             <li><a href="#">Workflow getting started</a></li>
                         </ul>

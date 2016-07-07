@@ -38,12 +38,12 @@
                         {% for collection in collections %}
                             <div class=grid-item>
                                 <div class="card app-icon-card">
-                                    <div class="app-icon-image container-collection" id="{{ collection.id }}" style="background: url(http://api.adorable.io/avatars/270/con-{{ collection.id }}) center">
-                                        <a class="hidden" href="{% url 'container_collection_details' collection.id %}"></a>
+                                    <div class="app-icon-image workflow-collection" id="{{ collection.id }}" style="background: url(http://api.adorable.io/avatars/270/wf-{{ collection.id }}) center">
+                                        <a class="hidden" href="{% url 'workflow_collection_details' collection.id %}"></a>
                                     </div>
                                     <div class=app-icon-details>
                                         <div class=app-icon-title>{{ collection.name }}</div>
-                                            <a href="{% url 'container_collection_details' collection.id %}"><i style="color:#666; margin-right:20px" class="ti-package"></i></a>
+                                            <a href="{% url 'workflow_collection_details' collection.id %}"><i style="color:#666; margin-right:20px" class="ti-package"></i></a>
                                         </div>
                                     </div>
                                 </div>
@@ -105,7 +105,7 @@ function() {
 }();
 
 $(document).ready(function() {
-    $(".container-collection").click(function() {
+    $(".workflow-collection").click(function() {
         window.location = $(this).find("a").attr("href"); 
         return false
     });

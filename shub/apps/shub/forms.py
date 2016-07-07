@@ -56,8 +56,8 @@ class ContainerCollectionForm(ModelForm):
 class WorkflowForm(ModelForm):
 
     class Meta:
-        model = Container
-        fields = ("name","image")
+        model = Workflow
+        fields = ("name","containers")
 
     def clean(self):
         cleaned_data = super(WorkflowForm, self).clean()
@@ -82,7 +82,7 @@ class WorkflowCollectionForm(ModelForm):
         fields = ("name","description")
 
     def clean(self):
-        cleaned_data = super(ContainerCollectionForm, self).clean()
+        cleaned_data = super(WorkflowCollectionForm, self).clean()
         return cleaned_data
 
     def __init__(self, *args, **kwargs):

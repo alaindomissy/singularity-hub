@@ -60,7 +60,7 @@ def get_container_collection(cid,request):
 
 # get workflow
 def get_workflow(wid,request):
-    keyargs = {'unique_id':wid}
+    keyargs = {'id':wid}
     try:
         workflow = Workflow.objects.get(**keyargs)
     except Workflow.DoesNotExist:
@@ -87,23 +87,27 @@ def get_workflow_collection(wid,request):
 def all_containers(request):
     has_collections = False
     collections = ContainerCollection.objects.filter(private=False)
-    context = {"collections":collections}
+    context = {"collections":collections,
+               "page_title":"Container Collections"}
     return render(request, 'containers/all_containers.html', context)
 
 # Personal collections
 @login_required
 def my_container_collections(request):
     collections = ContainerCollection.objects.filter(owner=request.user)
-    context = {"collections":collections}
-    return render(request, 'containers/my_container_collections.html', context)
+    context = {"collections":collections,
+               "page_title":"My Container Collections"}
+    return render(request, 'containers/all_containers.html', context)
 
 # View container collection
 @login_required
 def view_container_collection(request,cid):
     collection = get_container_collection(cid,request)
     containers = Container.objects.filter(collection=collection)
+    workflows = WorkflowCollection.objects.filter(owner=request.user)
     context = {"collection":collection,
-               "containers":containers}
+               "containers":containers,
+               "workflows":workflows}
     return render(request, 'containers/container_collection_details.html', context)
 
 # View container
@@ -159,7 +163,7 @@ def edit_container_collection(request, cid=None):
 
     if cid:
         collection = get_container_collection(cid,request)
-        is_owner = container.owner == request.user
+        is_owner = collection.owner == request.user
     else:
         is_owner = True
         collection = ContainerCollection(owner=request.user)
@@ -185,7 +189,7 @@ def edit_container_collection(request, cid=None):
                    "is_owner": is_owner}
 
         return render(request, "containers/edit_container_collection.html", context)
-    return redirect("collections")
+    return redirect("container_collections")
 
 # Upload container
 @login_required
@@ -216,3 +220,132 @@ def upload_container(request,cid):
             context = {"form": form,
                        "collection": collection}
             return render(request, "containers/edit_container.html", context)
+
+
+###############################################################################################
+# WORKFLOWS ###################################################################################
+###############################################################################################
+
+# All workflows
+def all_workflows(request):
+    has_collections = False
+    collections = WorkflowCollection.objects.filter(private=False)
+    context = {"collections":collections,
+               "page_title":"Workflow Collections"}
+    return render(request, 'workflows/all_workflows.html', context)
+
+# Personal collections
+@login_required
+def my_workflow_collections(request):
+    collections = WorkflowCollection.objects.filter(owner=request.user)
+    context = {"collections":collections,
+               "page_title":"My Workflow Collections"}
+    return render(request, 'workflows/all_workflows.html', context)
+
+# View workflow collection
+@login_required
+def view_workflow_collection(request,wid):
+    collection = get_workflow_collection(wid,request)
+    workflows = Workflow.objects.filter(collection=collection)
+    context = {"collection":collection,
+               "workflows":workflows}
+    return render(request, 'workflows/workflow_collection_details.html', context)
+
+# View workflow
+@login_required
+def view_workflow(request,wid):
+    workflow = get_workflow(wid,request)
+    context = {"workflow":workflow}
+    return render(request, 'workflows/workflow_details.html', context)
+
+# Delete workflow
+@login_required
+def delete_workflow(request,wid):
+    workflow = get_workflow(wid,request)
+    collection = workflow.collection
+    if request.user == collection.owner:
+        workflow.delete()
+    else:
+        # If not authorizer, alert!
+        msg = "You are not authorized to perform this operation."
+        messages.warning(request, msg)
+    return HttpResponseRedirect(collection.get_absolute_url())
+
+# Edit workflow
+@login_required
+def add_workflow(request,coid):
+
+    collection = get_workflow_collection(coid,request)
+    if collection.owner == request.user:   
+        if request.method == "POST":
+            form = WorkflowForm(request.POST,instance=workflow)
+            if form.is_valid():
+                workflow = form.save(commit=False)
+                workflow.save()
+                return HttpResponseRedirect(workflow.get_absolute_url())
+    else:
+        return redirect("workflow_collections")
+    return HttpResponseRedirect(collection.get_absolute_url())
+   
+
+# Edit workflow
+@login_required
+def edit_workflow(request,coid,wid=None):
+
+    # TODO: Add collaborators checking
+    collection = get_workflow_collection(coid,request)
+    if collection.owner == request.user:   
+        workflow = Workflow()
+        if request.method == "POST":
+            form = WorkflowForm(request.POST,instance=workflow)
+            if form.is_valid():
+                workflow = form.save(commit=False)
+                workflow.collection = collection
+                workflow.save()
+                return HttpResponseRedirect(workflow.get_absolute_url())
+        else:
+            form = WorkflowForm(instance=workflow)
+
+            # Limit containers to those that are in public collections
+            form.fields["containers"].queryset = Container.objects.filter(collection__private=False)
+
+            context = {"form": form,
+                       "collection": collection}
+            return render(request, "workflows/edit_workflow.html", context)
+    return redirect("workflow_collections")
+
+
+# Edit container collection
+@login_required
+def edit_workflow_collection(request,coid=None):
+
+    if coid:
+        collection = get_workflow_collection(coid,request)
+        is_owner = collection.owner == request.user
+    else:
+        is_owner = True
+        collection = WorkflowCollection(owner=request.user)
+        if request.method == "POST":
+            form = WorkflowCollectionForm(request.POST,instance=collection)
+            if form.is_valid():
+                previous_contribs = set()
+                if form.instance.id is not None:
+                    previous_contribs = set(form.instance.contributors.all())
+                collection = form.save(commit=False)
+                collection.save()
+
+                if is_owner:
+                    form.save_m2m()  # save contributors
+                    current_contribs = set(collection.contributors.all())
+                    new_contribs = list(current_contribs.difference(previous_contribs))
+
+                return HttpResponseRedirect(collection.get_absolute_url())
+        else:
+            form = WorkflowCollectionForm(instance=collection)
+
+        context = {"form": form,
+                   "is_owner": is_owner}
+
+        return render(request, "workflows/edit_workflow_collection.html", context)
+    return redirect("workflow_collections")
+
