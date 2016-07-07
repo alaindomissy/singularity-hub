@@ -1830,6 +1830,11 @@ abbr[data-original-title] {
 .icon-controls a {
   color:#E32929;
 }
+
+.button-box {
+  margin-left: 65px !important;
+}
+
 .initialism {
   font-size: 90%;
 }

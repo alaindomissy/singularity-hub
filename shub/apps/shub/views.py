@@ -270,22 +270,6 @@ def delete_workflow(request,wid):
         msg = "You are not authorized to perform this operation."
         messages.warning(request, msg)
     return HttpResponseRedirect(collection.get_absolute_url())
-
-# Edit workflow
-@login_required
-def add_workflow(request,coid):
-
-    collection = get_workflow_collection(coid,request)
-    if collection.owner == request.user:   
-        if request.method == "POST":
-            form = WorkflowForm(request.POST,instance=workflow)
-            if form.is_valid():
-                workflow = form.save(commit=False)
-                workflow.save()
-                return HttpResponseRedirect(workflow.get_absolute_url())
-    else:
-        return redirect("workflow_collections")
-    return HttpResponseRedirect(collection.get_absolute_url())
    
 
 # Edit workflow

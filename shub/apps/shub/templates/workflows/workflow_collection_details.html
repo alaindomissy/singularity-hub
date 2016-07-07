@@ -64,8 +64,8 @@
                            {% for workflow in workflows %}
                            <tr>
                                <td style="width:80px"><span class="mdl-list__item-secondary-action">
-                                   <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="list-checkbox-{{ container.id }}">
-                                   <input type="checkbox" name="{{ container.id }}" id="list-checkbox-{{ container.id }}" class="mdl-checkbox__input"/>
+                                   <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="list-checkbox-{{ workflow.id }}">
+                                   <input type="checkbox" name="{{ workflow.id }}" id="list-checkbox-{{ workflow.id }}" class="mdl-checkbox__input"/>
                                    </label>
                                 </span></td>
                                <td>{{ workflow.name }}</td>
