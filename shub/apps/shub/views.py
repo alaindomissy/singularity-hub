@@ -251,12 +251,6 @@ def view_workflow_collection(request,wid):
                "workflows":workflows}
     return render(request, 'workflows/workflow_collection_details.html', context)
 
-# View workflow
-@login_required
-def view_workflow(request,wid):
-    workflow = get_workflow(wid,request)
-    context = {"workflow":workflow}
-    return render(request, 'workflows/workflow_details.html', context)
 
 # Delete workflow
 @login_required
@@ -272,14 +266,19 @@ def delete_workflow(request,wid):
     return HttpResponseRedirect(collection.get_absolute_url())
    
 
-# Edit workflow
+# Edit workflow details
 @login_required
-def edit_workflow(request,coid,wid=None):
+def edit_workflow(request,coid=None,wid=None):
 
-    # TODO: Add collaborators checking
-    collection = get_workflow_collection(coid,request)
-    if collection.owner == request.user:   
+    # If collection ID is provided, we are generating a new workflow
+    if coid != None:
+        collection = get_workflow_collection(coid,request)
         workflow = Workflow()
+    else:
+        workflow = get_workflow(wid,request)
+        collection = workflow.collection
+
+    if collection.owner == request.user:   
         if request.method == "POST":
             form = WorkflowForm(request.POST,instance=workflow)
             if form.is_valid():
@@ -295,11 +294,25 @@ def edit_workflow(request,coid,wid=None):
 
             context = {"form": form,
                        "collection": collection}
+
             return render(request, "workflows/edit_workflow.html", context)
     return redirect("workflow_collections")
 
 
-# Edit container collection
+# Edit/View workflow diagram
+@login_required
+def view_workflow(request,wid):
+
+    workflow = get_workflow(wid,request)
+    collection = workflow.collection
+
+    context = {"workflow": workflow,
+               "collection": collection}
+
+    return render(request, "workflows/workflow_details.html", context)
+
+
+# Edit workflow collection
 @login_required
 def edit_workflow_collection(request,coid=None):
 

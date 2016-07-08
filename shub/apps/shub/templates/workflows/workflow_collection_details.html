@@ -7,7 +7,6 @@
 {% endblock %}
 
 {% block css %}
-<link rel="stylesheet" href="{% static "css/material.indigo-pink.min.css"%}">
 <link rel="stylesheet" href="{% static "css/material-table.css"%}">
 {% endblock%}
 
@@ -48,13 +47,7 @@
                    <table id="datatable">
                        <thead>
                            <tr>
-                               <td></td><!-- eventually below can be select / deselect all-->
-                               <!--<td style="width:80px"><span class="mdl-list__item-secondary-action">
-                                   <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="checkbox-selectall">
-                                   <input type="checkbox" id="checkbox-selectall" class="mdl-checkbox__input"/>
-                                   </label>
-                                </span>
-                               </td>-->
+                               <td></td>
                                <th>Name</th>
                                <th>#Containers</th>
                            </tr>
@@ -63,11 +56,15 @@
                            <tbody>
                            {% for workflow in workflows %}
                            <tr>
-                               <td style="width:80px"><span class="mdl-list__item-secondary-action">
-                                   <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="list-checkbox-{{ workflow.id }}">
-                                   <input type="checkbox" name="{{ workflow.id }}" id="list-checkbox-{{ workflow.id }}" class="mdl-checkbox__input"/>
-                                   </label>
-                                </span></td>
+                               <!-- Controller buttons -->
+                               <td>
+                                   <a href="{% url 'workflow_details' workflow.id %}"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                                       Diagram
+                                   </button></a>
+                                   <a href="{% url 'edit_workflow' workflow.id %}"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                                       Edit
+                                   </button></a>
+                               </td>
                                <td>{{ workflow.name }}</td>
                                <td>{{ workflow.containers.count }}</td>
                            </tr>

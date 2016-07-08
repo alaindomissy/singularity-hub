@@ -1,13 +1,18 @@
-{% extends "containers/base.html" %}
+{% extends "main/base.html" %}
 {% load crispy_forms_tags %}
 {% load staticfiles %}
 
-{% block image_content %}
+{% block css %}
+<link rel="stylesheet" href="{% static "css/joint.min.css"%}" />
+<link rel="stylesheet" type="text/css" href="{% static "css/jointjs.css"%}" />
+{% endblock %}
+
+{% block content %}
 <div class="row">
     <div class="col-md-12">
         <div class="card" style="padding:20px">
-            <div class="header" style="padding-bottom:50px">
-                <h2 class="title">{{ collection.name }}</h2>
+            <div class="header">
+                <h2 class="title">{{ workflow.name }}</h2>
                 <h3>
                      <span class="icon-controls" style="position:relative;top:-70px">
                          <a href=""><i class="ti-download"></i></a>
@@ -15,92 +20,132 @@
                          <a href=""><i class="ti-share"></i></a>
                      </span>
                 </h3>
+                <div data-background-color="white" data-active-color="danger">
+                     <p>Part of <a href={% url 'workflow_collection_details' collection.id %}>{{ collection.name }}</a></p>
+                </div>
+
             </div>
             <div class="content">
-                <div data-background-color="white" data-active-color="danger">
-                     <p style="padding-left:30px">{{ collection.description }}</p>
-                </div>
 
-                        <div class="card">
-                            <div class="header">
-                                <h4 class="title">Statistics</h4>
-                                <p class="category">24 hour usage</p>
-                            </div>
-                            <div class="content">
-                                <div id="chartHours" class="ct-chart"></div>
-                                <div class="footer">
-                                    <div class="chart-legend" style="margin-left:20px">
-                                        <i class="fa fa-circle text-success"></i> Optimal
-                                        <i class="fa fa-circle text-danger"></i> Error
-                                        <i class="fa fa-circle text-warning"></i> Warning
-                                    </div>
-                                    <hr>
-                                    <div class="stats" style="margin-left:20px">
-                                        <i class="ti-reload"></i> Updated 3 minutes ago
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="header">
-                                <h4 class="title">Workflows</h4>
-                                <p class="category">Lastest running workflows</p>
-                            </div>
-                            <div class="content">
-                                <div id="chartPreferences" class="ct-chart ct-perfect-fourth"></div>
-
-                                <div class="footer">
-                                    <div class="chart-legend"  style="margin-left:20px">
-                                        <i class="fa fa-circle text-success"></i> Finished
-                                        <i class="fa fa-circle text-danger"></i> Error
-                                        <i class="fa fa-circle text-warning"></i> Running
-                                    </div>
-                                    <hr>
-                                    <div class="stats"  style="margin-left:20px">
-                                        <i class="ti-timer"></i> Last run 2 days ago
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card ">
-                            <div class="header">
-                                <h4 class="title">Projects</h4>
-                                <p class="category">Links back to this container</p>
-                            </div>
-                            <div class="content">
-                                <div id="chartActivity" class="ct-chart"></div>
-
-                                <div class="footer">
-                                    <div class="chart-legend"  style="margin-left:20px">
-                                        <i class="fa fa-circle text-info"></i> Public
-                                        <i class="fa fa-circle text-warning"></i> Private
-                                    </div>
-                                    <hr>
-                                    <div class="stats"  style="margin-left:20px">
-                                        <i class="ti-check"></i> Data information certified
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+                <div id="paper"></div>
 
                 <div class="footer">
                 <hr>
+                </div>
             </div>
         </div>
     </div>
-</div>
 {% endblock %}
 
 {% block scripts %}
+<script src="{% static "js/lodash.min.js"%}"></script>
+<script src="{% static "js/backbone-min.js"%}"></script>
+<script src="{% static "js/joint.js"%}"></script>
+<script src="{% static "js/joint.shapes.devs.min.js"%}"></script>
 <script>
+var graph = new joint.dia.Graph();
 
+var paper = new joint.dia.Paper({
+    el: $('#paper'),
+    width: 800,
+    height: 600,
+    gridSize: 1,
+    model: graph,
+    snapLinks: true,
+    linkPinning: false,
+    embeddingMode: true,
+    validateEmbedding: function(childView, parentView) {
+        return parentView.model instanceof joint.shapes.devs.Coupled;
+    },
+    validateConnection: function(sourceView, sourceMagnet, targetView, targetMagnet) {
+        return sourceMagnet != targetMagnet;
+    }
+});
+
+var connect = function(source, sourcePort, target, targetPort) {
+    var link = new joint.shapes.devs.Link({
+        source: { id: source.id, selector: source.getPortSelector(sourcePort) },
+        target: { id: target.id, selector: target.getPortSelector(targetPort) }
+    });
+    link.addTo(graph).reparent();
+};
+
+var c1 = new joint.shapes.devs.Coupled({
+    position: { x: 230, y: 150 },
+    size: { width: 300, height: 300 },
+    inPorts: ['in'],
+    outPorts: ['out 1','out 2']
+});
+
+var a1 = new joint.shapes.devs.Atomic({
+    position: { x: 360, y: 360 },
+    inPorts: ['xy'],
+    outPorts: ['x','y']
+});
+
+var a2 = new joint.shapes.devs.Atomic({
+    position: { x: 50, y: 260 },
+    outPorts: ['out']
+});
+
+var a3 = new joint.shapes.devs.Atomic({
+    position: { x: 650, y: 150 },
+    size: { width: 100, height: 300 },
+    inPorts: ['a','b']
+});
+
+graph.addCells([c1, a1, a2, a3]);
+
+c1.embed(a1);
+
+connect(a2,'out',c1,'in');
+connect(c1,'in',a1,'xy');
+connect(a1,'x',c1,'out 1');
+connect(a1,'y',c1,'out 2');
+connect(c1,'out 1',a3,'a');
+connect(c1,'out 2',a3,'b');
+
+/* rounded corners */
+
+_.each([c1,a1,a2,a3], function(element) {
+    element.attr({ '.body': { 'rx': 6, 'ry': 6 }});
+});
+
+/* custom highlighting */
+
+var highlighter = V('circle', {
+    'r': 14,
+    'stroke': '#ff7e5d',
+    'stroke-width': '6px',
+    'fill': 'transparent',
+    'pointer-events': 'none'
+});
+
+paper.off('cell:highlight cell:unhighlight').on({
+    
+    'cell:highlight': function(cellView, el, opt) {
+
+        if (opt.embedding) {
+            V(el).addClass('highlighted-parent');
+        }
+
+        if (opt.connecting) {
+            var bbox = V(el).bbox(false, paper.viewport);
+            highlighter.translate(bbox.x + 10, bbox.y + 10, { absolute: true });
+            V(paper.viewport).append(highlighter);
+        }
+    },
+    
+    'cell:unhighlight': function(cellView, el, opt) {
+
+        if (opt.embedding) {
+            V(el).removeClass('highlighted-parent');
+        }
+
+        if (opt.connecting) {
+            highlighter.remove();
+        }
+    }
+});
 </script>
 {% endblock %}

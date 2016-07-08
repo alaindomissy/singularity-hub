@@ -20,8 +20,8 @@ urlpatterns = patterns('',
     # Workflows
     url(r'^workflows$', shub_views.all_workflows, name="workflow_collections"),
     url(r'^workflows/(?P<coid>.+?)/new$', shub_views.edit_workflow, name="new_workflow"),
-    url(r'^workflows/(?P<coid>.+?)/(?P<wid>.+?)/edit$',shub_views.edit_workflow,name='edit_workflow'),
-    url(r'^workflows/(?P<wid>.+?)/$',shub_views.view_workflow,name='workflow_details'),
+    url(r'^workflows/(?P<wid>.+?)/edit$',shub_views.edit_workflow,name='edit_workflow'),
+    url(r'^workflows/(?P<wid>.+?)$',shub_views.view_workflow,name='workflow_details'),
 
     # Workflow Collections
     url(r'^collections/workflows/new$',shub_views.edit_workflow_collection,name='new_workflow_collection'),

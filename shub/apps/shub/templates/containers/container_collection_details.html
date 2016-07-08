@@ -59,7 +59,7 @@
                            </tr>
                        </thead>
 
-                       <form method="POST" action="{% url 'new_workflow' %}" id="container-table">
+                       <form method="POST" action="{% url 'new_workflow' collection.id %}" id="container-table">
                            {% csrf_token %}
                            <tbody>
                            {% for container in containers %}
