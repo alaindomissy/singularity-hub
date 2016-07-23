@@ -44,7 +44,8 @@ THIRD_PARTY_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'guardian',
-    'django_gravatar'
+    'django_gravatar',
+    'taggit'
 ]
 
 INSTALLED_APPS += THIRD_PARTY_APPS

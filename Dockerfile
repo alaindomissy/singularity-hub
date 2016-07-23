@@ -3,7 +3,6 @@ ENV PYTHONUNBUFFERED 1
 RUN apt-get update && apt-get install -y \
     libopenblas-dev \
     gfortran \
-    libffi-dev \ # for toil encryption, if needed
     libhdf5-dev \
     libgeos-dev \
     build-essential \

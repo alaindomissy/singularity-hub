@@ -3,6 +3,7 @@ from django.db.models.signals import m2m_changed
 from shub.apps.shub.storage import ImageStorage
 from polymorphic.models import PolymorphicModel
 from django.core.urlresolvers import reverse
+from taggit.managers import TaggableManager
 from django.contrib.auth.models import User
 from django.db.models import Q, DO_NOTHING
 from shub.settings import MEDIA_ROOT
@@ -85,6 +86,8 @@ class Container(models.Model):
     description = models.CharField(max_length=1000, null=True, blank=True)
     image = models.FileField(upload_to=get_upload_folder,null=True,blank=False)
     collection = models.ForeignKey(ContainerCollection,null=False,blank=False)
+    tags = TaggableManager()
+
     # Will need to add version control to Container model here
 
     def __str__(self):
