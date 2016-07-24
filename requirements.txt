@@ -41,3 +41,4 @@ django-datatables-view
 django-oauth-toolkit==0.9.0
 wdl
 django-gravatar2
+singularity

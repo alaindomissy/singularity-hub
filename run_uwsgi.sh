@@ -6,4 +6,5 @@ python manage.py makemigrations
 python manage.py migrate auth
 python manage.py migrate
 python manage.py collectstatic --noinput
+python scripts/upload_base_packages.py
 uwsgi uwsgi.ini

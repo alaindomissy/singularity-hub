@@ -84,6 +84,7 @@ class Container(models.Model):
     '''
     name = models.CharField(max_length=250, null=False, blank=False)
     description = models.CharField(max_length=1000, null=True, blank=True)
+    version = models.CharField(max_length=100, null=True, blank=True)
     image = models.FileField(upload_to=get_upload_folder,null=True,blank=False)
     collection = models.ForeignKey(ContainerCollection,null=False,blank=False)
     tags = TaggableManager()

@@ -61,10 +61,10 @@ def create_user(request, template_name='registration/signup.html'):
             new_user = auth.authenticate(username=request.POST['username'],
                                          password=request.POST['password1'])
 
-            # We now save the user into the Expfactory User object, with a role
-            expfactory_user,_ = User.objects.update_or_create(user=new_user,
-                                                              role="LOCAL")
-            expfactory_user.save()
+            # We now save the user into the User object, with a role
+            new_user,_ = User.objects.update_or_create(user=new_user,
+                                                       role="LOCAL")
+            new_user.save()
             auth.login(request, new_user)
 
             # Do something. Should generally end with a redirect. For example:
